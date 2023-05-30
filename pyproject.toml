@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "open-chat"
+version = "0.1.0"
+description = "A simple chat application"
+authors = ["Carlos Mateus"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "open_chat"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+flask = "^2.3.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
