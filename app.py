@@ -1,12 +1,9 @@
 from flask import Flask
+from routes.index import index
 
-
-server = Flask(__name__)
-
-@server.get('/')
-def hello():
-    return 'Hello world!'
-
+app = Flask(__name__)
+app.register_blueprint(index)
+app.config.from_pyfile('config.cfg', silent=True)
 
 if __name__ == '__main__':
-    server.run()
+    app.run()

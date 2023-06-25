@@ -8,8 +8,10 @@ readme = "README.md"
 packages = [{include = "open_chat"}]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.8"
 flask = "^2.3.2"
+flask-socketio = "^5.3.4"
+simple-websocket = "^0.10.1"
 
 
 [build-system]

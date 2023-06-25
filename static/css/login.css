@@ -1,0 +1,50 @@
+body {
+    background-color: #212223;
+    background-image: url('../img/wallpaper.png');
+    background-size: cover;
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.social-wireless {
+    display: flex;
+    width: 278px;
+    height: 56px;
+    padding: 13px 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.50);
+    background: #252525;
+
+    cursor: pointer;
+}
+
+.social-wireless, .social-wireless * {
+    user-select: none;
+}
+
+.social-wireless > img {
+    width: 25px;
+    height: 25px;
+    flex-shrink: 0;
+}
+
+.social-wireless > p {
+    color: #F9F9F9;
+    text-align: center;
+    font-size: 12px;
+    font-family: Poppins;
+    font-weight: 500;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
