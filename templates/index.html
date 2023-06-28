@@ -1,13 +1,43 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Open chat | Home</title>
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=7">
-</head>
-<body>
-    <!--
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
-    -->
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}open-chat{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="messages-menu">
+    <div id="messages-action">
+        <form class="search-bar">
+            <img src="{{ url_for('static', filename='img/search.svg') }}">
+            <input type="text" id="" placeholder="Pesquisar por conversas">
+        </form>
+    
+        <button>
+            +
+        </button>
+    </div>
+    <div class="messages"></div>
+    <div class="user-painel">
+        <span>
+            <img src="{{ url_for('static', filename='img/user-photo-example.png') }}" id="user-photo">
+            <div id="user-info">
+                <span id="user-name">
+                    Carlos Mateus
+                </span>
+                <span id="username">
+                    carlosmatateumateus@gmail.com
+                </span>
+            </div>
+        </span>
+        <div id="user-options">
+            <img src="{{ url_for('static', filename='img/options.svg') }}">
+        </div>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+<!--
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
+-->    
+{% endblock %}
