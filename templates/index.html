@@ -4,6 +4,7 @@
 
 {% block styles %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/sms-controll.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -34,6 +35,34 @@
         <div id="user-options">
             <img src="{{ url_for('static', filename='img/options.svg') }}">
         </div>
+    </div>
+</div>
+
+<div class="messages-controll">
+    <div id="another-painel">
+        <div>
+            <img src="{{ url_for('static', filename='img/user-photo-example.png') }}" id="user-photo">
+            <span>
+                <div id="user-info">
+                    <span id="user-name">
+                        Carlos Mateus
+                    </span>
+                </div>
+                <span id="state">escrevendo...</span>
+            </span>
+        </div>
+        <span class="actions">
+            <span id="call"><img src="{{ url_for('static', filename='img/call.svg') }}" id="call"></span>
+            <span id="video-call"><img src="{{ url_for('static', filename='img/video-call.svg') }}" id="video-call"></span>
+            <span id="options"><img src="{{ url_for('static', filename='img/options.svg') }}" id="options"></span>
+        </span>
+    </div>
+    <div id="message-studio"></div>
+    <div id="message-writer">
+        <textarea placeholder="Degite o conteúdo da mensagem 💬"></textarea>
+        <span id="send-message">
+            <img src="{{ url_for('static', filename='img/without-message.svg') }}">
+        </span>
     </div>
 </div>
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>

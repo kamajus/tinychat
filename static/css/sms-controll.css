@@ -1,0 +1,95 @@
+.messages-controll {
+    width: calc(100vw - 400px);
+    height: 100vh;
+}
+
+.messages-controll > #another-painel {
+    height: 90px;
+    width: 100%;
+    padding: 20px;
+    background-color: #212121;
+    border-top: 1px solid rgba(0, 0, 0, 0.50);
+    border-right: 1px solid rgba(0, 0, 0, 0.50);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.50);
+}
+
+/* ANOTHER PAINEL */
+
+#another-painel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#another-painel > div {
+    display: flex;
+    gap: 13px;
+}
+
+#another-painel #user-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
+}
+
+span#state {
+    color: #8B6CEF;
+    font-size: 12px;
+}
+
+.messages-controll > #message-studio {
+    height: calc(100% - 90px - 80px);
+    width: 100%;
+}
+
+.messages-controll > #message-writer {
+    height: 80px;
+    width: 100%;
+    background-color: #212121;
+    border-top: 1px solid rgba(0, 0, 0, 0.50);
+    border-right: 1px solid rgba(0, 0, 0, 0.50);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.50);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#message-writer > textarea {
+    width: 90%;
+    height: 80%;
+    padding: 13px;
+    border: 1px solid rgba(0, 0, 0, 0.50);
+    background: #282828;
+    border-radius: 4px;
+    resize: none;
+    color: white;
+}
+
+#message-writer > textarea::-webkit-scrollbar {
+    width: 8px;
+}
+  
+#message-writer > textarea::-webkit-scrollbar-thumb {
+    background-color: #252525; 
+    border-radius: 4px;
+    min-width: 1.2px; 
+}
+  
+#message-writer > textarea::-webkit-scrollbar-track {
+    background-color: #f9f9f941; 
+    border-radius: 4px;
+}
+
+#message-writer > textarea:focus {
+    outline: .5px solid #8b6cef;
+}
+
+#send-message {
+    cursor: pointer;
+}
+
+
+.actions > span {
+    cursor: pointer;
+}

@@ -2,12 +2,15 @@ body {
     background-color: #212223;
     background-image: url('../img/wallpaper.png');
     background-size: cover;
+
+    display: flex;
 }
 
 #messages-menu {
     height: 100vh;
     width: 400px;
     background-color: #212121;
+    border: 1px solid rgba(0, 0, 0, 0.50);
     padding: 20px;
     gap: 10px;
 
@@ -29,7 +32,7 @@ body {
     border-radius: 4px;
     border: 1px solid #000;
     background: #8B6CEF;
-    color: #000;
+    color: #fff;
     font-size: 20px;
     font-weight: 500;
     display: inline;
@@ -134,6 +137,13 @@ body {
 .user-painel #username {
     color: #8B6CEF;
     font-size: 12px;
+}
+
+span.actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
 }
 
 #user-photo {

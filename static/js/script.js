@@ -117,3 +117,16 @@ messageList.forEach((message) => {
 
   messageContainer.appendChild(div);
 });
+
+const message_text = document.querySelector('#message-writer > textarea');
+const message_image = document.querySelector('#send-message > img');
+
+message_text.addEventListener('input', (event) => {
+  if (event.target.value.trim().length === 0) {
+    console.log('nada!')
+    message_image.src = "/static/img/without-message.svg";
+  } else {
+    console.log('alguma coisa!')
+    message_image.src = "/static/img/with-message.svg";
+  }
+});
