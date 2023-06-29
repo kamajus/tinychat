@@ -1,6 +1,7 @@
 .messages-controll {
     width: calc(100vw - 400px);
     height: 100vh;
+    display: none;
 }
 
 .messages-controll > #another-painel {
@@ -92,4 +93,68 @@ span#state {
 
 .actions > span {
     cursor: pointer;
+}
+
+#message-studio {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    overflow-y: auto;
+}
+
+.message-box {
+    display: inline-flex;
+    padding: 10px;
+    max-width: 380px;
+    flex-direction: column;
+    gap: 10px;
+    border-radius: 8px;
+    background: #242424;
+    border: 1px solid rgba(0, 0, 0, 0.50);
+    margin-bottom: 14px;
+    float: right;
+}
+
+p#message-box-content {
+    color: #FFF;
+    font-size: 14px;
+    font-family: Poppins;
+}
+
+span#message-box-date {
+    color: #E1E1E1;
+    font-size: 10px;
+    font-family: Poppins;
+    text-align: right;
+}
+
+.message-box.you {
+    background: #242424;
+}
+
+.message-box.me {
+    background: #8b6cef;
+    border: 1px solid rgb(0, 0, 0);
+    margin-left: auto;
+}
+
+#message-studio::-webkit-scrollbar {
+    width: 8px;
+}
+  
+#message-studio::-webkit-scrollbar-thumb {
+    background-color: #000000; 
+    border-radius: 4px;
+    min-width: 1.2px; 
+}
+  
+#message-studio::-webkit-scrollbar-track {
+    background-color: #f9f9f941; 
+    border-radius: 4px;
+}
+
+mark.user-id {
+    color: rgb(197, 197, 197);
+    background-color: transparent;
 }

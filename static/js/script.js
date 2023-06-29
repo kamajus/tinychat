@@ -72,11 +72,13 @@ const messageList = [
 ];
   
 
+const messagesControll = document.querySelector(".messages-controll");
 const messageContainer = document.querySelector(".messages");
+const messageStudio = document.querySelector("#message-studio");
 
 messageList.forEach((message) => {
   const div = document.createElement("div");
-  div.className = "message no-select";
+  div.className = "message";
 
   const img = document.createElement("img");
   img.src = message.photoUrl;
@@ -94,7 +96,7 @@ messageList.forEach((message) => {
   const dateSpan = document.createElement("span");
   dateSpan.id = "date";
   dateSpan.textContent = message.time;
-
+  
   innerDiv.appendChild(userNameSpan);
   innerDiv.appendChild(dateSpan);
 
@@ -118,15 +120,75 @@ messageList.forEach((message) => {
   messageContainer.appendChild(div);
 });
 
-const message_text = document.querySelector('#message-writer > textarea');
-const message_image = document.querySelector('#send-message > img');
+const messageText = document.querySelector('#message-writer > textarea');
+const messageImage = document.querySelector('#send-message > img');
 
-message_text.addEventListener('input', (event) => {
+messageText.addEventListener('input', (event) => {
   if (event.target.value.trim().length === 0) {
     console.log('nada!')
-    message_image.src = "/static/img/without-message.svg";
+    messageImage.src = "/static/img/without-message.svg";
   } else {
     console.log('alguma coisa!')
-    message_image.src = "/static/img/with-message.svg";
+    messageImage.src = "/static/img/with-message.svg";
   }
 });
+
+const messages = document.querySelectorAll('.message')
+
+// Selecionando mensagens!
+messages.forEach(message => {
+  message.addEventListener('click', () => {
+    messagesControll.style.display = "block"
+  })
+})
+
+const converse = [
+  {
+    sender: "me",
+    content: "Oi amor! Como foi o seu dia ontem? Estou ansioso para saber tudo o que aconteceu! 😊",
+    date: new Date("2023-06-27T12:30:00"),
+  },
+  {
+    sender: "you",
+    content: "Oi meu amor! Meu dia ontem foi maravilhoso! Passei o dia com minha família e me lembrei de você o tempo todo. ❤️",
+    date: new Date("2023-06-27T14:20:00"),
+  },
+  {
+    sender: "me",
+    content: "Sinto tanto a sua falta... Mal posso esperar para te ver novamente! ❤️",
+    date: new Date("2023-06-28T10:15:00"),
+  },
+  {
+    sender: "me",
+    content: "Eu tem amo ❤️",
+    date: new Date("2023-06-28T10:15:00"),
+  },
+  {
+    sender: "you",
+    content: "Eu também te amo!!!",
+    date: new Date("2023-06-28T10:15:00"),
+  }
+];
+
+converse.forEach((message) => {
+  const messageBox = document.createElement("message-box");
+
+  if (message.sender == "me") {
+    messageBox.className = "message-box me"
+  } else {
+    messageBox.className = "message-box you"
+  }
+
+  const messageDate = document.createElement("span");
+  messageDate.id = "message-box-date"
+  messageDate.textContent = "12:45";
+
+  const messageContent = document.createElement("p");
+  messageContent.id = "message-box-content"
+  messageContent.textContent = message.content;
+
+  messageBox.appendChild(messageContent)
+  messageBox.appendChild(messageDate)
+
+  messageStudio.appendChild(messageBox)
+})
