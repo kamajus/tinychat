@@ -3,6 +3,7 @@ body {
     background-color: #212223;
     background-image: url('../img/wallpaper.png');
     background-size: cover;
+    
     display: flex;
     justify-content: center;
     align-items: center;
@@ -22,6 +23,15 @@ body {
     cursor: pointer;
 }
 
+.social-wireless:hover {
+    filter: brightness(.8);
+}
+
+.social-wireless:active {
+    filter: brightness(.6);
+}
+
+
 .social-wireless, .social-wireless * {
     user-select: none;
 }
@@ -40,8 +50,17 @@ body {
     font-weight: 500;
 }
 
-main {
+main#login {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     gap: 20px;
+}
+
+main#login > div#info-login * {
+    color: #f9f9f9;
+    font-size: 12px;
+    font-weight: 500;
+    margin-right: auto;
 }

@@ -2,9 +2,11 @@
 
 {% block title %}Open chat{% endblock %}
 
-{% block styles %}
+{% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/sms-controll.css') }}">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
+<script src="{{ url_for('static', filename='js/socketio_client.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -15,7 +17,7 @@
             <input type="text" id="" placeholder="Pesquisar por conversas">
         </form>
     
-        <button>
+        <button id="new-message">
             +
         </button>
     </div>
@@ -25,10 +27,10 @@
             <img src="{{ url_for('static', filename='img/user-photo-example.png') }}" id="user-photo">
             <div id="user-info">
                 <span id="user-name">
-                    Carlos Mateus
+                    ...
                 </span>
-                <span id="username">
-                    carlosmateus#3543
+                <span id="email">
+                    ...
                 </span>
             </div>
         </span>
@@ -45,7 +47,7 @@
             <span>
                 <div id="user-info">
                     <span id="user-name">
-                        Carlos Mateus<mark class="user-id">#3453</mark>
+                        Carlos Mateus<mark class="user-id">#carlosm2@gmail.com</mark>
                     </span>
                 </div>
                 <span id="state">degitando...</span>
@@ -64,9 +66,20 @@
             <img src="{{ url_for('static', filename='img/without-message.svg') }}">
         </span>
     </div>
+</div>  
+{% endblock content %}
+
+{% block popup %}
+<div id="popup">
+    <form class="search-bar">
+        <img src="{{ url_for('static', filename='img/search.svg') }}">
+        <input type="text" id="" placeholder="Degite o email do usuário">
+    </form>
+
+    <p>Encontre usuários e começe a conversar 💬</p>
+
+    <div class="close-popup">
+        <img src="{{ url_for('static', filename='img/x-circle.svg') }}" class="close-popup">
+    </div>
 </div>
-<script src="{{ url_for('static', filename='js/script.js') }}"></script>
-<!--
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
--->    
 {% endblock %}

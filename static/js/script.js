@@ -1,4 +1,4 @@
-const messageList = [
+const MESSAGES = [
     {
       name: "John Smith",
       content: "Hello, how are you?",
@@ -61,13 +61,6 @@ const messageList = [
       time: "13:55",
       newMessages: 0,
       photoUrl: "https://example.com/user9.jpg"
-    },
-    {
-      name: "Emma Wilson",
-      content: "Have you seen the latest movie?",
-      time: "12:30",
-      newMessages: 1,
-      photoUrl: "https://example.com/user10.jpg"
     }
 ];
   
@@ -76,9 +69,13 @@ const messagesControll = document.querySelector(".messages-controll");
 const messageContainer = document.querySelector(".messages");
 const messageStudio = document.querySelector("#message-studio");
 
-messageList.forEach((message) => {
+console.log(messagesControll)
+MESSAGES.forEach((message) => {
   const div = document.createElement("div");
   div.className = "message";
+
+  // Message Id
+  div.id = "13232323"
 
   const img = document.createElement("img");
   img.src = message.photoUrl;
@@ -122,13 +119,15 @@ messageList.forEach((message) => {
 
 const messageText = document.querySelector('#message-writer > textarea');
 const messageImage = document.querySelector('#send-message > img');
+const send_message = document.querySelector('#send-message')
+let hasContent = false
 
 messageText.addEventListener('input', (event) => {
   if (event.target.value.trim().length === 0) {
-    console.log('nada!')
+    hasContent = false
     messageImage.src = "/static/img/without-message.svg";
   } else {
-    console.log('alguma coisa!')
+    hasContent = true
     messageImage.src = "/static/img/with-message.svg";
   }
 });
@@ -142,7 +141,7 @@ messages.forEach(message => {
   })
 })
 
-const converse = [
+const DEFAULT_CONVERSE = [
   {
     sender: "me",
     content: "Oi amor! Como foi o seu dia ontem? Estou ansioso para saber tudo o que aconteceu! 😊",
@@ -160,35 +159,109 @@ const converse = [
   },
   {
     sender: "me",
-    content: "Eu tem amo ❤️",
+    content: "Eu te amo ❤️",
     date: new Date("2023-06-28T10:15:00"),
   },
   {
     sender: "you",
     content: "Eu também te amo!!!",
     date: new Date("2023-06-28T10:15:00"),
-  }
+  },
+  {
+    sender: "you",
+    content: "Amor, eu preciso te contar algo muito difícil... Meu pai faleceu hoje de manhã.",
+    date: new Date("2023-06-28T14:40:00"),
+  },
+  {
+    sender: "me",
+    content: "Oh meu amor, estou sem palavras... Sinto muito pela sua perda. Sei o quanto você amava seu pai. 😢",
+    date: new Date("2023-06-28T14:45:00"),
+  },
+  {
+    sender: "you",
+    content: "Obrigado, meu amor. É um momento muito difícil para mim e para minha família. Estou tentando lidar com a dor, mas é muito duro...",
+    date: new Date("2023-06-28T14:50:00"),
+  },
+  {
+    sender: "me",
+    content: "Estou aqui para você, meu amor. Sei que não há palavras que possam aliviar completamente a dor, mas saiba que estou ao seu lado para te apoiar em tudo que precisar. Você não está sozinha.",
+    date: new Date("2023-06-28T14:55:00"),
+  },
+  {
+    sender: "you",
+    content: "Obrigado por estar comigo, meu amor. Sua presença é um conforto nesse momento tão difícil. Eu te amo tanto...",
+    date: new Date("2023-06-28T15:00:00"),
+  },
+  {
+    sender: "me",
+    content: "Eu também te amo muito, e vou estar aqui para te ajudar a passar por essa fase. Seja forte, e lembre-se que seu pai estará sempre vivo em nossas memórias e no nosso amor.",
+    date: new Date("2023-06-28T15:05:00"),
+  },
 ];
 
-converse.forEach((message) => {
-  const messageBox = document.createElement("message-box");
+function update_converse() {
+  DEFAULT_CONVERSE.forEach((message) => {
+    const messageBox = document.createElement("message-box");
+  
+    if (message.sender == "me") {
+      messageBox.className = "message-box me"
+    } else {
+      messageBox.className = "message-box you"
+    }
+  
+    const messageDate = document.createElement("span");
+    messageDate.id = "message-box-date"
+    messageDate.textContent = "12:45";
+  
+    const messageContent = document.createElement("p");
+    messageContent.id = "message-box-content"
+    messageContent.textContent = message.content;
+  
+    messageBox.appendChild(messageContent)
+    messageBox.appendChild(messageDate)
+  
+    messageStudio.appendChild(messageBox)
+  })
+}
 
-  if (message.sender == "me") {
-    messageBox.className = "message-box me"
-  } else {
-    messageBox.className = "message-box you"
-  }
+// PopUp new user
 
-  const messageDate = document.createElement("span");
-  messageDate.id = "message-box-date"
-  messageDate.textContent = "12:45";
+const newMessage = document.querySelector('#new-message')
+const closePopUp = document.querySelector('div#popup div.close-popup')
+const popUp = document.querySelector('#popup')
 
-  const messageContent = document.createElement("p");
-  messageContent.id = "message-box-content"
-  messageContent.textContent = message.content;
-
-  messageBox.appendChild(messageContent)
-  messageBox.appendChild(messageDate)
-
-  messageStudio.appendChild(messageBox)
+newMessage.addEventListener('click', () => {
+  popUp.style.display = 'flex'
 })
+
+closePopUp.addEventListener('click', () => {
+  popUp.style.display = 'none'
+})
+
+window.addEventListener("click", function(event) {
+  if (event.target !== popUp && event.target !== newMessage && !popUp.contains(event.target)) {
+    popUp.style.display = "none";
+  }
+});
+
+
+// search-bar
+
+const searchBar = document.querySelector('form.search-bar')
+const inputSearchBar = document.querySelector('form.search-bar > input')
+
+// Send message
+
+send_message.addEventListener('click', () => {
+  if (hasContent) {
+    sendMessage({
+        'from': userData.email,
+        'to': '',
+        'content': messageText.value
+    })
+
+    messageText.value = ""
+  }
+})
+
+update_converse();

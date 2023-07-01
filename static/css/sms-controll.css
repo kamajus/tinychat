@@ -120,6 +120,7 @@ p#message-box-content {
     color: #FFF;
     font-size: 14px;
     font-family: Poppins;
+    white-space: pre-wrap;
 }
 
 span#message-box-date {
@@ -155,6 +156,6 @@ span#message-box-date {
 }
 
 mark.user-id {
-    color: rgb(197, 197, 197);
+    color: #8B6CEF;
     background-color: transparent;
 }

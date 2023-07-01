@@ -134,7 +134,7 @@ body {
     flex-shrink: 0;
 }
 
-.user-painel #username {
+.user-painel #email {
     color: #8B6CEF;
     font-size: 12px;
 }

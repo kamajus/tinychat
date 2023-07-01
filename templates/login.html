@@ -1,26 +1,20 @@
 {% extends "base.html" %}
 
-{% block title %}Open chat | Auth{% endblock %}
-
-{% block styles %}
+{% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 {% endblock %}
 
 {% block content %}
-<main>
-    <div class="social-wireless">
-        <img src="{{ url_for('static', filename='img/google.svg') }}"</img>
-        <p>Iniciar sessão com o google</p>
+<main id="login">
+    <div class="social-wireless" onclick="googleSignIn()">
+        <img src="{{ url_for('static', filename='img/google.svg') }}" alt="Google Logo">
+        <p>Iniciar sessão com o Google</p>
     </div>
-
-    <div class="social-wireless">
-        <img src="{{ url_for('static', filename='img/github.svg') }}"</img>
-        <p>Iniciar sessão com o github</p>
-    </div>
-
-    <div class="social-wireless">
-        <img src="{{ url_for('static', filename='img/facebook.svg') }}"</img>
-        <p>Iniciar sessão com o facebook</p>
-    </div>
+    
+    <div id="info-login">
+        <p>Acesso rápido e fácil! Entre com o <a href="https://google.com" target="_blank">Google</a> para desfrutar das tuas conversas. 😄💬🔐</p>
+    </div>      
 </main>
 {% endblock %}
+
+
