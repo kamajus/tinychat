@@ -1,11 +1,13 @@
 div#popup {
     width: 400px;
-    height: 200px;
+    height: 150px;
     padding: 5px;
+
     border-radius: 4px;
     border: 1px solid rgba(0, 0, 0, 0.50);
     background-color: #212121;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.1);
+    
     position: absolute;
     top: calc(50vh - 100px);
     right: calc(50vw - 200px);
@@ -13,6 +15,7 @@ div#popup {
     display: none;
     align-items: center;
     flex-direction: column;
+    overflow-y: auto;
 }
 
 div#popup > .search-bar {
@@ -22,21 +25,12 @@ div#popup > .search-bar {
 div#popup > p {
     color: #FFF;
     font-size: 12.5px;
-
     margin-top: auto;
     margin-bottom: auto;
 }
 
-div#popup div.close-popup {
-    cursor: pointer;
-    position: absolute;
-
-    bottom: 0;
-    right: 0;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    transition: 1s;
+div#popup .message {
+    width: 99%;
+    margin-top: 4px;
+    display: none;
 }

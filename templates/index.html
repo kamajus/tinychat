@@ -4,12 +4,14 @@
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/sms-controll.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/controller.css') }}">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
-<script src="{{ url_for('static', filename='js/socketio_client.js') }}"></script>
+<script src="{{ url_for('static', filename='js/socketio.js') }}"></script>
 {% endblock %}
 
 {% block content %}
+<!-- Messages menu -->
+
 <div id="messages-menu">
     <div id="messages-action">
         <form class="search-bar">
@@ -24,12 +26,12 @@
     <div class="messages"></div>
     <div class="user-painel">
         <span>
-            <img src="{{ url_for('static', filename='img/user-photo-example.png') }}" id="user-photo">
+            <img src="" id="user-photo">
             <div id="user-info">
                 <span id="user-name">
                     ...
                 </span>
-                <span id="email">
+                <span class="email">
                     ...
                 </span>
             </div>
@@ -40,17 +42,19 @@
     </div>
 </div>
 
+<!-- Messages controller -->
+
 <div class="messages-controll">
     <div id="another-painel">
         <div>
             <img src="{{ url_for('static', filename='img/user-photo-example.png') }}" id="user-photo">
             <span>
                 <div id="user-info">
-                    <span id="user-name">
-                        Carlos Mateus<mark class="user-id">#carlosm2@gmail.com</mark>
-                    </span>
+                    <div id="user-name">
+                        ...<mark class="email">...</mark>
+                    </div>
                 </div>
-                <span id="state">degitando...</span>
+                <span id="state">...</span>
             </span>
         </div>
         <span class="actions">
@@ -69,17 +73,26 @@
 </div>  
 {% endblock content %}
 
+<!-- Search user PopUp -->
+
 {% block popup %}
 <div id="popup">
     <form class="search-bar">
         <img src="{{ url_for('static', filename='img/search.svg') }}">
-        <input type="text" id="" placeholder="Degite o email do usuário">
+        <input type="text" name="email" placeholder="Degite o email do usuário">
     </form>
 
-    <p>Encontre usuários e começe a conversar 💬</p>
-
-    <div class="close-popup">
-        <img src="{{ url_for('static', filename='img/x-circle.svg') }}" class="close-popup">
+    <div class="message" onclick="messagesClick">
+        <img id="user-photo">
+        <div id="content">
+            <div>
+            <span id="user-name"></span>
+            <span id="date"></span>
+            </div>
+            <p></p>
+        </div>
     </div>
+
+    <p>Encontre usuários e começe a conversar 💬</p>
 </div>
 {% endblock %}

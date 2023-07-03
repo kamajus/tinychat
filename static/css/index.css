@@ -134,11 +134,6 @@ body {
     flex-shrink: 0;
 }
 
-.user-painel #email {
-    color: #8B6CEF;
-    font-size: 12px;
-}
-
 span.actions {
     display: flex;
     justify-content: center;

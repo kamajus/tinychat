@@ -5,6 +5,10 @@
     font-family: Poppins;
 }
 
+mark {
+    background-color: transparent;
+}
+
 img, .message > * {
     pointer-events: none;
     -webkit-touch-callout: none !important;
@@ -13,4 +17,9 @@ img, .message > * {
     -moz-user-select: none !important;
     -ms-user-select: none !important;
     user-select: none !important;
+}
+
+.email {
+    color: #8B6CEF;
+    font-size: 12px;
 }

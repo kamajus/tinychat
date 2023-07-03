@@ -29,21 +29,15 @@
         let provider = new firebase.auth.GoogleAuthProvider();
 
         async function userLogin(user)  {
-            console.log({
-                    "name": user.email,
-                    "email": user.email,
-                    "photoUrl": user.photoUrl
-                })
-
-            dataFetch = fetch('http://localhost:5000/login', {
+            dataFetch = fetch('/login', {
                 "method": "POST",
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    "name": user.email,
-                    "email": user.email,
-                    "photoURL": user.photoURL
+                    "name": user["displayName"],
+                    "email": user["email"],
+                    "photoURL": user["photoURL"]
                 })
             })
 
@@ -67,11 +61,11 @@
     </script>
     <script src="{{ url_for('static', filename='js/firebase.js') }}"></script>
     {% block head %}{% endblock %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/popup.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/popup.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%2210 0 100 100%22><text y=%22.90em%22 font-size=%2290%22>💬</text></svg>">
     <title>{% block title %}{% endblock %}</title>
 </head>
@@ -82,5 +76,7 @@
     {% block popup %}
     {% endblock %}
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/converse.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/message.js') }}"></script>
 </body>
 </html>
