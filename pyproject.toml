@@ -5,7 +5,7 @@ description = "A simple chat application"
 authors = ["Carlos Mateus"]
 license = "MIT"
 readme = "README.md"
-packages = [{include = "open_chat"}]
+packages = [{include = "openchat"}]
 
 [tool.poetry.dependencies]
 python = "^3.8"

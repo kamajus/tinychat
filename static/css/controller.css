@@ -65,10 +65,8 @@ span#state {
     color: white;
 }
 
-#message-writer > textarea::-webkit-scrollbar {
-    width: 8px;
-}
-  
+#message-writer > textarea::-webkit-scrollbar { width: 8px; }
+
 #message-writer > textarea::-webkit-scrollbar-thumb {
     background-color: #252525; 
     border-radius: 4px;
@@ -80,13 +78,9 @@ span#state {
     border-radius: 4px;
 }
 
-#message-writer > textarea:focus {
-    outline: .5px solid #8b6cef;
-}
+#message-writer > textarea:focus { outline: .5px solid #8b6cef; }
 
-#send-message, .actions > span  {
-    cursor: pointer;
-}
+#send-message, .actions > span  { cursor: pointer; }
 
 #message-studio {
     padding: 30px;
@@ -123,9 +117,7 @@ span#message-box-date {
     text-align: right;
 }
 
-.message-box.you {
-    background: #242424;
-}
+.message-box.you { background: #242424; }
 
 .message-box.me {
     background: #8b6cef;
@@ -133,9 +125,7 @@ span#message-box-date {
     margin-left: auto;
 }
 
-#message-studio::-webkit-scrollbar {
-    width: 8px;
-}
+#message-studio::-webkit-scrollbar { width: 8px; }
   
 #message-studio::-webkit-scrollbar-thumb {
     background-color: #000000; 

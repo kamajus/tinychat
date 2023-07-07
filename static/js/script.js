@@ -1,33 +1,97 @@
-let messages;
+function calculateDateDifference(date) {
+  var nowDate = moment(new Date().toISOString());
+  var endDate = moment(date);
 
-const popUpForm = document.querySelector('#popup form');
-const newMessage = document.querySelector('#new-message')
-const popUp = document.querySelector('#popup')
+  var duration = moment.duration(nowDate.diff(endDate));
 
-function messagesClick(event) {
-  messagesControll.style.display = "block";    
-  targetEmail = event.target.id
+  var years = duration.years();
+  var months = duration.months();
+  var days = duration.days();
+  var hours = duration.hours();
+  var minutes = duration.minutes();
+  var seconds = duration.seconds();
 
-  fetch(`/search/users/${targetEmail}`)
+  var timeUnit = "";
+  var value = 0;
+
+  if (years > 0) {
+    timeUnit = "y";
+    value = years;
+  } else if (months > 0) {
+    timeUnit = "mo";
+    value = months;
+  } else if (days > 0) {
+    timeUnit = "d";
+    value = days;
+  } else if (hours > 0) {
+    timeUnit = "h";
+    value = hours;
+  } else if (minutes > 0) {
+    timeUnit = "m";
+    value = minutes;
+  } else if (seconds > 0) {
+    timeUnit = "s";
+    value = seconds;
+  } else {
+    value = "agora"
+  }
+
+  return value + timeUnit;
+}
+
+const calculateDateLastStay = date => {
+  /*
+  Calcula a diferença entre a data de agora e data da última aparição de um certo usuário.
+  */
+  var nowDate = moment(new Date().toISOString());
+  var endDate = moment(date);
+
+  var duration = moment.duration(nowDate.diff(endDate));
+  var minutes = duration.minutes();
+
+  if (minutes >= 1) return calculateDateDifference(date)
+  else return "online"
+}
+
+const updateUserStates = (user, lastStay) => {
+  if (!isOtherWriting) {
+    if (document.querySelector('#another-painel mark.email').textContent.replace("#", "") == user) {
+      document.querySelector(`#another-painel #state`).textContent = calculateDateLastStay(lastStay)
+    }
+  }
+}
+
+const updateWriteState = (user, isWriting) => {
+  if (document.querySelector('#another-painel mark.email').textContent.replace("#", "") == user) {
+    if (isWriting) {
+      document.querySelector(`#another-painel #state`).textContent = "Degitando..."
+    } else {
+      document.querySelector(`#another-painel #state`).textContent = "..."
+    }
+  }
+}
+
+const messagesClick = event => {
+  /*
+  Disparado quando uma mensagem for clicada
+
+  event: Event
+  */
+  messagesControll.style.display = 'block'   
+
+  fetch(`/search/users/${event.target.id}@gmail.com`)
   .then(data => data.json())
   .then(data => {
-    updateConverses({
+    updateMessages({
       "name": data.name,
       "email": data.email,
-      "photoURL": data.photoURL
-    })
+      "photoURL": data.photoURL,
+      "last_stay": calculateDateLastStay(data['last_stay'])
+    }, false)
   })
 }
 
-newMessage.addEventListener('click', () => {
-  popUp.style.display = 'flex'
-})
-
-window.addEventListener("click", function(event) {
-  if (event.target !== popUp && event.target !== newMessage && !popUp.contains(event.target)) {
-    popUp.style.display = "none";
-  }
-});
+newMessage.addEventListener('click', () => { popUp.style.display = 'flex' })
 
 popUpForm.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -43,6 +107,7 @@ popUpForm.addEventListener('submit', (e) => {
   })
   .then(data => {
     document.querySelector('div#popup .message').style.display = 'flex'
+    document.querySelector('div#popup .message').id = data.email.replace('@gmail.com', '')
     document.querySelector('div#popup').onclick = messagesClick
 
     const userPhoto = document.querySelector('div#popup #user-photo');
@@ -50,19 +115,14 @@ popUpForm.addEventListener('submit', (e) => {
     const date = document.querySelector('div#popup #date');
     const messageParagraph = document.querySelector('div#popup #content p');
     const counter = document.querySelector('div#popup #counter');
-
-    document.querySelector('div#popup .message').id = data.email
+    
     userPhoto.src = data.photoURL;
     userName.textContent = data.name;
     date.textContent = data.time;
     
-    if (data.content == "" || !messageParagraph.textContent) {
-      messageParagraph.textContent = "Óla já estou a usar o Open-chat"
-    }
+    if (data.content == "" || !messageParagraph.textContent) messageParagraph.textContent = "Óla já estou a usar o Open-chat"
 
-    if (data.newMessages != 0 && data.newMessages) {
-      counter.textContent = data.newMessages;
-    }
+    if (data.newMessages != 0 && data.newMessages) counter.textContent = data.newMessages;
 
     document.querySelector('#popup > p').style.display = 'none'
   })
@@ -70,3 +130,24 @@ popUpForm.addEventListener('submit', (e) => {
     console.error('⚠️ Erro durante a requisição:', error);
   });
 });
+
+window.addEventListener("click", event => {
+  if (event.target !== popUp && event.target !== newMessage && !popUp.contains(event.target)) {
+    popUp.style.display = "none";
+  }
+});
+
+setInterval(() => {
+  if (userData) {
+    fetch(`/users/states/${userData.email}`)
+    .then(data => data.json())
+    .then(users => {
+      users.forEach(user => {
+        userStates[user.user] = user['last_stay']
+        updateUserStates([user.user], user['last_stay'])
+      })
+    })
+  }
+
+  tickPing();
+}, 3000)

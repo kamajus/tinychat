@@ -1,35 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script>
-        let userData;
+        let messagesCached = {};
+        let chatsCached = {};
+        let userStates = {};
+        let myFriends = [];
 
-        const firebaseConfig = {
+        let isOtherWriting = false;
+        let userSelected, userData;
+
+        firebase.initializeApp({
             apiKey: "AIzaSyAwLawFqBXpugTFrGZ47Omd1hx7vJQZhqA",
             authDomain: "open-chat-44975.firebaseapp.com",
             projectId: "open-chat-44975",
             storageBucket: "open-chat-44975.appspot.com",
             messagingSenderId: "419750701729",
             appId: "1:419750701729:web:e959b1da9d9534eb869ee0"
-        };
+        });
 
-        firebase.initializeApp(firebaseConfig);
-        
-        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-          .then()
-          .catch(function(error) {
-            console.log('Erro ao configurar persistência de sessão:', error);
-          });
-
-        let provider = new firebase.auth.GoogleAuthProvider();
+        const provider = new firebase.auth.GoogleAuthProvider();
 
         async function userLogin(user)  {
-            dataFetch = fetch('/login', {
+            fetch('/login', {
                 "method": "POST",
                 headers: {
                     'Content-Type': 'application/json',
@@ -39,23 +38,21 @@
                     "email": user["email"],
                     "photoURL": user["photoURL"]
                 })
-            })
-
-            await dataFetch
-            .then(data => data.json())
-            .then(data => {
-                console.log(data)
+            }).then(() => {
+                onLogin(user.email)
+            }).catch(error => {
+                console.error(error)
             })
         }
 
         function googleSignIn() {
             firebase.auth()
             .signInWithPopup(provider)
-            .then((result) => {
-                userData = result.user;
+            .then((res) => {
+                userData = res.user;
                 userLogin(userData)
             }).catch((error) => {
-                throw new Error(error);
+                console.error(error)
             });
         }
     </script>
@@ -75,8 +72,9 @@
 
     {% block popup %}
     {% endblock %}
+    <script src="{{ url_for('static', filename='js/elements.js') }}"></script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/converse.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/message.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chats.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/messages.js') }}"></script>
 </body>
 </html>

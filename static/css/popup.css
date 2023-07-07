@@ -18,9 +18,7 @@ div#popup {
     overflow-y: auto;
 }
 
-div#popup > .search-bar {
-    width: 99%;
-}
+div#popup > .search-bar { width: 99%; }
 
 div#popup > p {
     color: #FFF;

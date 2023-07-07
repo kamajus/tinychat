@@ -1,6 +1,9 @@
 from rich.console import Console
 from os import getenv
+from dotenv import load_dotenv
 import pymongo
+
+load_dotenv()
 
 client = pymongo.MongoClient(f"mongodb+srv://{getenv('MONGO_USERNAME')}:{getenv('MONGO_PASSWORD')}@openchat.htdtkbx.mongodb.net/?retryWrites=true&w=majority")
 db = client['open-chat']

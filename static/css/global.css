@@ -5,9 +5,7 @@
     font-family: Poppins;
 }
 
-mark {
-    background-color: transparent;
-}
+mark { background-color: transparent; }
 
 img, .message > * {
     pointer-events: none;

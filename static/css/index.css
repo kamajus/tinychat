@@ -39,9 +39,7 @@ body {
     cursor: pointer;
 }
 
-#messages-action button:active {
-    filter: brightness(80%);
-}
+#messages-action button:active { filter: brightness(80%); }
 
 .search-bar {
     width: 85%;
@@ -83,9 +81,7 @@ body {
     padding: 1%;
 }
   
-.messages::-webkit-scrollbar {
-    width: 8px;
-}
+.messages::-webkit-scrollbar { width: 8px; }
   
 .messages::-webkit-scrollbar-thumb {
     background-color: #252525; 
@@ -108,9 +104,7 @@ body {
     background: #252525;
 }
 
-.message {
-    min-height: 78px;
-}
+.message { min-height: 78px; }
 
 .user-painel {
     display: flex;

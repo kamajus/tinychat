@@ -21,20 +21,13 @@ body {
     border: 1px solid rgba(0, 0, 0, 0.50);
     background: #252525;
     cursor: pointer;
-}
 
-.social-wireless:hover {
-    filter: brightness(.8);
-}
-
-.social-wireless:active {
-    filter: brightness(.6);
-}
-
-
-.social-wireless, .social-wireless * {
     user-select: none;
 }
+
+.social-wireless:hover { filter: brightness(.8); }
+
+.social-wireless:active { filter: brightness(.6); }
 
 .social-wireless > img {
     width: 25px;
