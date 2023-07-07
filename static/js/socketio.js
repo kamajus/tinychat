@@ -32,8 +32,16 @@ sio.on('message', data => {
                 }, false)
             })
         }
-    
+        
         updateRealtimeChat(data)
+
+        if (data.messages.from.email === userData.email && !myFriends.includes(data.messages.to.email)) {
+            myFriends.push(data.messages.to.email)
+        }
+        
+        if (data.messages.to.email === userData.email && !myFriends.includes(data.messages.from.email)) {
+            myFriends.push(data.messages.from.email)
+        }
     }
 })
 

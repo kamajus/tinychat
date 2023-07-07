@@ -13,8 +13,10 @@ const updateRealtimeChat = data => {
   chatExists = myFriends.includes(targetUserData)?true:false
 
   if (chatExists) {
-    document.querySelector(`div#${chatEmailFormated}.message p`).textContent = data.messages["content"]
-    document.querySelector(`div#${chatEmailFormated}.message #date`).textContent = calculateDateDifference(data.messages["created_at"])
+    let chat = document.querySelector(`div#${chatEmailFormated}.message`)
+    chat.querySelector('p').textContent = data.messages["content"]
+    chat.querySelector('#date').textContent = calculateDateDifference(data.messages["created_at"])
+    messageContainer.insertBefore(chat, messageContainer.firstChild)
   } else { messageContainer.insertBefore(createNewChats(data), messageContainer.firstChild) }
 }
 
