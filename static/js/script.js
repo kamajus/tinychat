@@ -126,45 +126,92 @@ newMessage.addEventListener('click', () => { popUp.style.display = 'flex' })
 
 popUpForm.addEventListener('submit', (e) => {
   e.preventDefault();
-  dataFetch = fetch(`/search/users/${e.target.elements.email.value}`)
-  .then(data => {
-    if (data.ok == false) {
-      document.querySelector('div#popup > p').textContent = '❌ Nenhum usuário encontrado! Comece a conversar 💬'
-      document.querySelector('div#popup .message').style.display = 'none'
-      throw new Error('❌ Nenhum usuário encontrado! Comece a conversar 💬')
+
+  if (e.target.elements.email.value !== userData.email) {
+    if (myFriends.includes(e.target.elements.email.value)) {
+      fetch(`/chats/${userData.email}`)
+      .then(data => data.json())
+      .then(chats => {
+        targetChat = chats.filter(item => item.user.email === e.target.elements.email.value)[0]
+        document.querySelector('div#popup').onclick = messagesClick
+        document.querySelector('div#popup .message').style.display = 'flex'
+        document.querySelector('div#popup > p').style.display = "none";
+
+        const userPhoto = document.querySelector('div#popup #user-photo');
+        const userName = document.querySelector('div#popup #user-name');
+        const date = document.querySelector('div#popup #date');
+        const messageParagraph = document.querySelector('div#popup #content p');
+        const counterSpan = document.querySelector('div#popup #counter');
+        
+        
+        userPhoto.src = targetChat.user.photoURL;
+        userName.textContent = targetChat.user.name;
+        date.textContent = targetChat.user.time;
+
+        date.textContent = calculateDateDifference(targetChat.messages[targetChat.messages.length - 1]["created_at"]);
+        messageParagraph.textContent = reduceChatTextContent(targetChat.messages[targetChat.messages.length - 1].content);
+  
+        let unreadedChatCount = 0;
+        for (ct of targetChat.messages) {
+          if (ct.was_readed === false && ct.from_email !== userData.email) {
+            unreadedChatCount += 1;
+          }
+        }
+  
+
+        if (unreadedChatCount !== 0) {
+          counterSpan.textContent = unreadedChatCount;
+          counterSpan.style.display = "flex"
+        } else {
+          counterSpan.style.display = "none"
+        }
+      })
+    } else {
+      fetch(`/search/users/${e.target.elements.email.value}`)
+      .then(data => {
+        if (data.ok == false) {
+          document.querySelector('div#popup > p').textContent = '❌ Nenhum usuário encontrado! Comece a conversar 💬'
+          document.querySelector('div#popup .message').style.display = 'none'
+          throw new Error('❌ Nenhum usuário encontrado! Comece a conversar 💬')
+        }
+
+        return data.json()
+      })
+      .then(data => {
+        document.querySelector('div#popup .message').style.display = 'flex'
+        document.querySelector('div#popup .message').id = data.email.replace('@gmail.com', '')
+        document.querySelector('div#popup').onclick = messagesClick
+
+        const userPhoto = document.querySelector('div#popup #user-photo');
+        const userName = document.querySelector('div#popup #user-name');
+        const date = document.querySelector('div#popup #date');
+        const messageParagraph = document.querySelector('div#popup #content p');
+        const counterSpan = document.querySelector('div#popup #counter');
+        
+        userPhoto.src = data.photoURL;
+        userName.textContent = data.name;
+        date.textContent = data.time;
+        
+        if (data.content == "" || !messageParagraph.textContent) messageParagraph.textContent = "Óla já estou a usar o Open-chat"
+        document.querySelector('div#popup > p').style.display = "none";
+
+        counterSpan.style.display = "none"
+      }).catch(error => {
+        console.error('⚠️ Erro durante a requisição:', error);
+      });
     }
-
-    return data.json()
-  })
-  .then(data => {
-    document.querySelector('div#popup .message').style.display = 'flex'
-    document.querySelector('div#popup .message').id = data.email.replace('@gmail.com', '')
-    document.querySelector('div#popup').onclick = messagesClick
-
-    const userPhoto = document.querySelector('div#popup #user-photo');
-    const userName = document.querySelector('div#popup #user-name');
-    const date = document.querySelector('div#popup #date');
-    const messageParagraph = document.querySelector('div#popup #content p');
-    const counter = document.querySelector('div#popup #counter');
-    
-    userPhoto.src = data.photoURL;
-    userName.textContent = data.name;
-    date.textContent = data.time;
-    
-    if (data.content == "" || !messageParagraph.textContent) messageParagraph.textContent = "Óla já estou a usar o Open-chat"
-
-    if (data.newMessages != 0 && data.newMessages) counter.textContent = data.newMessages;
-
-    document.querySelector('#popup > p').style.display = 'none'
-  })
-  .catch(error => {
-    console.error('⚠️ Erro durante a requisição:', error);
-  });
+  } else {
+    document.querySelector('div#popup > p').textContent = '❌ Não podes conversar consigo mesmo 💬'
+    document.querySelector('div#popup .message').style.display = 'none'
+    throw new Error('❌ Não podes conversar consigo mesmo 💬')
+  }
 });
 
 window.addEventListener("click", event => {
   if (event.target !== popUp && event.target !== newMessage && !popUp.contains(event.target)) {
     popUp.style.display = "none";
+    document.querySelector('div#popup > p').textContent = 'Encontre usuários e começe a conversar 💬'
+    document.querySelector('div#popup .message').style.display = 'none'
   }
 });
 
