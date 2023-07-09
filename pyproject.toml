@@ -18,7 +18,6 @@ flask-pydantic = "^0.11.0"
 flask-cors = "^4.0.0"
 rich = "^13.4.2"
 python-dotenv = "^1.0.0"
-gunicorn = "^20.1.0"
 
 
 [build-system]
