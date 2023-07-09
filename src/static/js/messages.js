@@ -61,7 +61,7 @@ function updateMessages(data, message) {
       document.querySelector('#another-painel #user-name').textContent = data.name
       document.querySelector('#another-painel #user-name').appendChild(otherEmail)
       document.querySelector('#another-painel #user-photo').src = data.photoURL
-      document.querySelector(`#another-painel #state`).textContent = calculateDateLastStay(userStates[data.email])
+      document.querySelector(`#another-painel #state`).textContent = calculateDateLastStay(data.last_stay)
     }
   
     fetch(`/messages`, {

@@ -38,6 +38,16 @@
         </span>
         <div id="user-options">
             <img src="{{ url_for('static', filename='img/options.svg') }}">
+            <div id="mini-popup">
+                <button id="exit" onclick="deleteAccount()">
+                    <img src="{{ url_for('static', filename='img/x.svg') }}">
+                    Encerrar sua conta
+                </button>
+                <button id="logout" onclick="logOut()">
+                    <img src="{{ url_for('static', filename='img/sign-out.svg') }}">
+                    Terminar sessão
+                </button>
+            </div>
         </div>
     </div>
 </div>

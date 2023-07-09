@@ -98,7 +98,7 @@ const messagesClick = event => {
   document.querySelector("#message-studio").innerHTML = ""
 
   fetch("/read_messages", {
-    "method": "POST",
+    "method": "PUT",
     "headers": {
       "Content-Type": "application/json"
     },
@@ -114,7 +114,7 @@ const messagesClick = event => {
         "name": data.name,
         "email": data.email,
         "photoURL": data.photoURL,
-        "last_stay": calculateDateLastStay(data['last_stay'])
+        "last_stay": data.last_stay
       }, false)
     })
   }).catch((e) => {
@@ -123,6 +123,10 @@ const messagesClick = event => {
 }
 
 newMessage.addEventListener('click', () => { popUp.style.display = 'flex' })
+
+userOptions.addEventListener('click', () => {
+  miniPopUp.style.display = "flex"
+})
 
 popUpForm.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -212,6 +216,10 @@ window.addEventListener("click", event => {
     popUp.style.display = "none";
     document.querySelector('div#popup > p').textContent = 'Encontre usuários e começe a conversar 💬'
     document.querySelector('div#popup .message').style.display = 'none'
+  }
+
+  if (event.target !== miniPopUp && event.target !== userOptions) {
+    miniPopUp.style.display = "none"
   }
 });
 

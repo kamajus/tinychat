@@ -5,26 +5,26 @@ from models import UserModel, UsersList
 from db import db
 
 from datetime import datetime
-from os import getenv
-from dotenv import load_dotenv
 
 import pymongo
 
 index = Blueprint('index', __name__)
-load_dotenv()
 
-@index.get('/firebase-config')
-def get_firebase_config():
-    firebase_config = {
-        'apiKey': getenv('FIREBASE_API_KEY'),
-        'authDomain': getenv('FIREBASE_AUTH_DOMAIN'),
-        'projectId': getenv('FIREBASE_PROJECT_ID'),
-        'storageBucket': getenv('FIREBASE_STORAGE_BUCKET'),
-        'messagingSenderId': getenv('FIREBASE_MESSAGING_SENDER_ID'),
-        'appId': getenv('FIREBASE_APP_ID')
-    }
+@index.delete('/delete_account/<email>')
+@validate()
+def delete_account(email):
+    validate_email(email)
     
-    return jsonify(firebase_config)
+    response = None
+    
+    try:
+        db.users.delete_one({"email": email})
+        db.chats.delete_many({"users": email})
+        response = "deleted", 200
+    except Exception as error:
+        response = error, 200
+        
+    return response
 
 @index.post('/login')
 @validate()
@@ -74,7 +74,7 @@ def get_messages():
     return (chat['messages'], 200) if chat else ("you dont have message", 400)
 
 
-@index.post('/read_messages')
+@index.put('/read_messages')
 @validate()
 def read_messages():
     print(f'users: {request.json["users"]}')

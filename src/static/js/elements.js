@@ -7,3 +7,5 @@ const sendMessageElement = document.querySelector('#send-message');
 const popUpForm = document.querySelector('#popup form');
 const newMessage = document.querySelector('#new-message');
 const popUp = document.querySelector('#popup');
+const miniPopUp = document.querySelector('#mini-popup');
+const userOptions = document.querySelector('#user-options');
