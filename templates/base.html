@@ -51,22 +51,26 @@
                     console.error(error)
                 });
             }
+            
+            function userChange() {
+                firebase.auth().onAuthStateChanged(user => {
+                    userData = user
 
-            firebase.auth().onAuthStateChanged(user => {
-            userData = user
+                    if (!!user && window.document.location.pathname === "/login") {
+                        window.document.location.pathname = "/";
+                    } else if (!!!user && window.document.location.pathname === "/") {
+                        window.document.location.pathname = "/login";
+                    }
 
-            if (!!user && window.document.location.pathname === "/login") {
-                window.document.location.pathname = "/";
-            } else if (!!!user && window.document.location.pathname === "/") {
-                window.document.location.pathname = "/login";
+                    updateUserInfo(user)
+                    userLogin(user)
+                });
             }
 
-            updateUserInfo(user)
-            userLogin(user)
-        });
-    }).catch((e) => {
-        throw new Error(e)
-    })
+            userChange()
+        }).catch((e) => {
+            throw new Error(e)
+        })
     </script>
     <script src="{{ url_for('static', filename='js/firebase.js') }}"></script>
     {% block head %}{% endblock %}
