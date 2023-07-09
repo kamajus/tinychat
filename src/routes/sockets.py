@@ -4,7 +4,7 @@ from flask_pydantic import validate
 from pydantic import validate_email
 from engineio.payload import Payload
 
-from db import db, console
+from src.db import db, console
 
 from datetime import datetime
 from models import UsersList
