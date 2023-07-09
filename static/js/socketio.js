@@ -10,13 +10,13 @@ sio.on('pong', (user) => {
 })
 
 sio.on('message', data => {
-    let targetUserSearch = data.messages.from.email === userData.email?data.messages.to.email:data.messages.from.email
+    let targetUserSearch = data.messages.from_email.email === userData.email?data.messages.to_email.email:data.messages.from_email.email
     
-    if (data.messages.from.email === userData.email || data.messages.to.email === userData.email) {
+    if (data.messages.from_email.email === userData.email || data.messages.to_email.email === userData.email) {
         if (userSelected === targetUserSearch) {
             updateMessages(false, {
-                "from": data.messages.from.email,
-                "to": data.messages.to.email,
+                "from_email": data.messages.from_email.email,
+                "to_email": data.messages.to_email.email,
                 "content": data.messages.content,
                 "created_at": data.messages.created_at
             });
@@ -35,45 +35,45 @@ sio.on('message', data => {
         
         updateRealtimeChat(data)
 
-        if (data.messages.from.email === userData.email && !myFriends.includes(data.messages.to.email)) {
-            myFriends.push(data.messages.to.email)
+        if (data.messages.from_email.email === userData.email && !myFriends.includes(data.messages.to_email.email)) {
+            myFriends.push(data.messages.to_email.email)
         }
         
-        if (data.messages.to.email === userData.email && !myFriends.includes(data.messages.from.email)) {
-            myFriends.push(data.messages.from.email)
+        if (data.messages.to_email.email === userData.email && !myFriends.includes(data.messages.from_email.email)) {
+            myFriends.push(data.messages.from_email.email)
         }
     }
 })
 
 sio.on('typing', message => {
-    if (message.to == userData.email) updateWriteState(message.from, true)
+    if (message.to == userData.email) updateWriteState(message.from_email, true)
     isOtherWriting = true
 })
 
 sio.on('un-typing', message => {
-    if (message.to == userData.email) updateWriteState(message.from, false)
+    if (message.to == userData.email) updateWriteState(message.from_email, false)
     isOtherWriting = false
 })
 
 const sendMessage = message => {
     sio.emit('message', {
-        "from": message.from,
-        "to": message.to,
+        "from_email": message.from_email,
+        "to_email": message.to_email,
         "content": message.content
     })
 }
 
 const typingMessage = () => {
     sio.emit('typing', {
-        "from": userData.email,
-        "to": userSelected
+        "from_email": userData.email,
+        "to_email": userSelected
     })
 }
 
 const unTypingMessage = () => {
     sio.emit('un-typing', {
-        "from": userData.email,
-        "to": userSelected
+        "from_email": userData.email,
+        "to_email": userSelected
     })
 }
 

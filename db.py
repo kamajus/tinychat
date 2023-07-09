@@ -6,7 +6,7 @@ import pymongo
 load_dotenv()
 
 client = pymongo.MongoClient(f"mongodb+srv://{getenv('MONGO_USERNAME')}:{getenv('MONGO_PASSWORD')}@openchat.htdtkbx.mongodb.net/?retryWrites=true&w=majority")
-db = client['open-chat']
+db = client['openchat']
 
 console = Console()
 

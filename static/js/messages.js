@@ -28,7 +28,7 @@ function createMessages(message) {
   */
   const messageBox = document.createElement("message-box");
   
-  messageBox.className = (userData.email === message.from)?"message-box me":"message-box you"
+  messageBox.className = (userData.email === message.from_email)?"message-box me":"message-box you"
 
   const messageDate = document.createElement("span");
   messageDate.id = "message-box-date"
@@ -88,24 +88,24 @@ function updateMessages(data, message) {
   } else if (message) {
     document.querySelector("#message-studio").innerHTML = ""
     
-    if (message["from"] == userData.email) {
-      if (!messagesCached[message["to"]]) {
-        messagesCached[message["to"]] = []
+    if (message["from_email"] == userData.email) {
+      if (!messagesCached[message["to_email"]]) {
+        messagesCached[message["to_email"]] = []
       }
     
-      messagesCached[message["to"]].push(message)
+      messagesCached[message["to_email"]].push(message)
 
-      if (userSelected === message["to"]) {
-        messagesCached[message["to"]].forEach(messageData => { createMessages(messageData) })
+      if (userSelected === message["to_email"]) {
+        messagesCached[message["to_email"]].forEach(messageData => { createMessages(messageData) })
       }
     } else {
-      if (!messagesCached[message["from"]]) {
-        messagesCached[message["from"]] = []
+      if (!messagesCached[message["from_email"]]) {
+        messagesCached[message["from_email"]] = []
       }
 
-      messagesCached[message["from"]].push(message)
-      if (userSelected === message["from"]) {
-        messagesCached[message["from"]].forEach(messageData => { createMessages(messageData) })
+      messagesCached[message["from_email"]].push(message)
+      if (userSelected === message["from_email"]) {
+        messagesCached[message["from_email"]].forEach(messageData => { createMessages(messageData) })
       }
     }
 
@@ -116,8 +116,8 @@ function updateMessages(data, message) {
 sendMessageElement.addEventListener('click', () => {
   if (messageHasContent) {
     sendMessage({
-      'from': userData.email,
-      'to': userSelected,
+      'from_email': userData.email,
+      'to_email': userSelected,
       'content': messageText.value
     })
   

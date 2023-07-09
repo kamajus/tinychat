@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from flask_pydantic import validate
-
-from models import UserModel
+from pydantic import validate_email
+from models import UserModel, UsersList
 from db import db, pymongo
 
 from datetime import datetime
@@ -33,7 +33,10 @@ def login():
 
 
 @index.get('/search/users/<email>')
+@validate()
 def get_users(email: str):
+    validate_email(email)
+    
     user = db.users.find_one({"email": email})
 
     if (user):
@@ -43,14 +46,21 @@ def get_users(email: str):
 
 
 @index.post('/messages')
+@validate()
 def get_messages():    
+    print(f'users: {request.json["users"]}')
+    UsersList(users=request.json["users"])
+    
     chat = db.chats.find_one({"users": {"$all":request.json["users"]}})
     
     return (chat['messages'], 200) if chat else ("you dont have message", 400)
 
 
 @index.post('/read_messages')
+@validate()
 def read_messages():
+    print(f'users: {request.json["users"]}')
+    UsersList(users=request.json["users"])
     response = None
     
     try:
@@ -68,7 +78,10 @@ def read_messages():
     return response
 
 @index.get('/chats/<user>')
+@validate()
 def get_chats(user):
+    validate_email(user)
+    
     chats = list(db.chats.find({"users":user}).sort('update_at', pymongo.DESCENDING))
     
     final_chat = []
@@ -89,7 +102,10 @@ def get_chats(user):
 
 
 @index.get('/users/states/<user>')
+@validate()
 def get_states(user):
+    validate_email(user)
+    
     users = list(db.chats.find({"users":user}))
     final_users = []
     

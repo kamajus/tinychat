@@ -9,7 +9,7 @@ const updateRealtimeChat = data => {
   data: chat content
   */
 
-  let targetUserData = (userData.email === data.messages.to.email)?data.messages.from.email:data.messages.to.email;
+  let targetUserData = (userData.email === data.messages.to_email.email)?data.messages.from_email.email:data.messages.to_email.email;
 
   chatEmailFormated = targetUserData.replace('@gmail.com', '')
 
@@ -21,20 +21,21 @@ const updateRealtimeChat = data => {
     chat.querySelector('p').textContent = reduceChatTextContent(data.messages["content"])
     chat.querySelector('#date').textContent = calculateDateDifference(data.messages["created_at"])
 
-    if (userSelected === data.messages.from.email) {
+    console.log(data.messages.from_email.email, data.messages.to_email.email)
+    if (userSelected === data.messages.from_email.email) {
       fetch("/read_messages", {
         "method": "POST",
         "headers": {
           "Content-Type": "application/json"
         },
         "body": JSON.stringify({
-          "users": [data.messages.from.email, data.messages.to.email]
+          "users": [data.messages.from_email.email, data.messages.to_email.email]
         })
       }) .catch((e) => {
         console.log(e)
       })
 
-    } else if (data.messages.was_readed === false && data.messages.from.email !== userData.email && userSelected !== data.messages.to.email) {
+    } else if (data.messages.was_readed === false && data.messages.from_email.email !== userData.email && userSelected !== data.messages.to_email.email) {
       if (!chat.querySelector('#counter')) {
         let counter = document.createElement('span');
         counter.id = "counter";
@@ -42,7 +43,7 @@ const updateRealtimeChat = data => {
         chat.querySelector('#counter').textContent = "";
       }
 
-      if (data.messages.to.email === userData.email) {
+      if (data.messages.to_email.email === userData.email) {
         if (chat.querySelector('#counter').textContent !== "") {
           chat.querySelector('#counter').textContent = parseInt(chat.querySelector('#counter').textContent) + 1;
         } else {
@@ -105,12 +106,14 @@ const createNewChats = chat => {
 
   try {
     for (ct of chat.messages) {
-      if (ct.was_readed === false && ct.from !== userData.email) {
+      if (ct.was_readed === false && ct.from_email !== userData.email) {
         unreadedChatCount += 1;
       }
     }
   } catch {
-    unreadedChatCount = 1;
+    if (chat.messages.from_email.email !== userData.email) {
+      unreadedChatCount = 1;
+    }
   }
 
   counterSpan.textContent = unreadedChatCount;
@@ -174,7 +177,7 @@ const updateChats = user => {
       counterSpan.id = "counter";
 
       for (ct of chat.messages) {
-        if (ct.was_readed === false && ct.from !== userData.email) {
+        if (ct.was_readed === false && ct.from_email !== userData.email) {
           unreadedChatCount += 1;
         }
       }
