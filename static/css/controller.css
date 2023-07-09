@@ -87,7 +87,8 @@ span#state {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    overflow-y: auto;
+    overflow-y: scroll;
+    transition: scroll-behavior 0.5s ease-in-out;
 }
 
 .message-box {
@@ -123,6 +124,10 @@ span#message-box-date {
     background: #8b6cef;
     border: 1px solid rgb(0, 0, 0);
     margin-left: auto;
+}
+
+.message-box.me.not_readed {
+    background: #746596;
 }
 
 #message-studio::-webkit-scrollbar { width: 8px; }

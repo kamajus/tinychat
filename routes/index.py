@@ -46,8 +46,26 @@ def get_users(email: str):
 def get_messages():    
     chat = db.chats.find_one({"users": {"$all":request.json["users"]}})
     
-    return (chat['messages'], 200) if chat else ("dont-have-message", 400)
+    return (chat['messages'], 200) if chat else ("you dont have message", 400)
+
+
+@index.post('/read_messages')
+def read_messages():
+    response = None
     
+    try:
+        db.chats.update_one({"users": {"$all":request.json["users"]}}, {
+            "$set": {
+                "messages.$[].was_readed": True
+            }
+        })
+        
+        response = "sucefull", 200
+    except Exception as error:
+        response = f"error {error}", 200
+        
+    
+    return response
 
 @index.get('/chats/<user>')
 def get_chats(user):
@@ -63,11 +81,11 @@ def get_chats(user):
                     another_user['_id'] = str(another_user['_id'])
                     
                     final_chat.append({
-                        "messages": chat['messages'][-1],
+                        "messages": chat['messages'],
                         "user": another_user
                     })                  
         
-    return (final_chat, 200) if chats else ("dont-have-chats", 400)
+    return (final_chat, 200) if chats else ("you dont have chats!", 400)
 
 
 @index.get('/users/states/<user>')

@@ -1,12 +1,16 @@
 from flask import Blueprint
 from flask_socketio import SocketIO
 from flask_pydantic import validate
+from engineio.payload import Payload
+
 from db import db, console
 
 from datetime import datetime
 
 sockets = Blueprint('sockets', __name__)
 sio = SocketIO()
+
+Payload.max_decode_packets = 50
 
 @sio.on('connect')
 def on_connected():
@@ -46,7 +50,8 @@ def on_message(data):
                     "from": data["from"],
                     "to": data["to"],
                     "content": data["content"],
-                    "created_at": datetime.now().isoformat()
+                    "created_at": datetime.now().isoformat(),
+                    "was_readed": False
                 },
                 "update_at": datetime.now().isoformat()
             }
@@ -64,7 +69,8 @@ def on_message(data):
             "from": user_from,
             "to": user_to,
             "content": data["content"],
-            "created_at": datetime.now().isoformat()
+            "created_at": datetime.now().isoformat(),
+            "was_readed": False,
         }, "users": [user_from, user_to]
     })
     

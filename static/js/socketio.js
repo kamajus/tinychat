@@ -11,7 +11,8 @@ sio.on('pong', (user) => {
 
 sio.on('message', data => {
     let targetUserSearch = data.messages.from.email === userData.email?data.messages.to.email:data.messages.from.email
-    
+    console.log(userSelected, targetUserSearch)
+
     if (data.messages.from.email === userData.email || data.messages.to.email === userData.email) {
         if (userSelected === targetUserSearch) {
             updateMessages(false, {
@@ -25,10 +26,10 @@ sio.on('message', data => {
             .then(data => data.json())
             .then(data => {
                 updateMessages({
-                "name": data.name,
-                "email": data.email,
-                "photoURL": data.photoURL,
-                "last_stay": calculateDateLastStay(data['last_stay'])
+                    "name": data.name,
+                    "email": data.email,
+                    "photoURL": data.photoURL,
+                    "last_stay": calculateDateLastStay(data['last_stay'])
                 }, false)
             })
         }

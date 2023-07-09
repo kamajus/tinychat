@@ -51,62 +51,65 @@ function updateMessages(data, message) {
   data: informações do usuário clicado | false
   message: conteúdo da nova mensagem | false
   */
-  document.querySelector("#message-studio").innerHTML = ""
   if (data) {
-    userSelected = data.email
-
     let otherEmail = document.createElement("mark")
-    otherEmail.textContent = "#"+data.email
-    otherEmail.className = "email"
 
-    document.querySelector('#another-painel #user-name').textContent = data.name
-    document.querySelector('#another-painel #user-name').appendChild(otherEmail)
-    document.querySelector('#another-painel #user-photo').src = data.photoURL
-    document.querySelector(`#another-painel #state`).textContent = calculateDateLastStay(userStates[data.email])
-    
-    if (messagesCached[data["email"]] && !message) {  
-      messagesCached[data.email]
-      .forEach(messageData => { 
-        createMessages(messageData) 
-      })
+    if (userSelected === data.email) {
+      otherEmail.textContent = "#"+data.email
+      otherEmail.className = "email"
 
-      return
-    } else {
-      fetch(`/messages`, {
-        "method": "POST",
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        "body": JSON.stringify({
-          "users": [
-            userData.email,
-            userSelected
-          ]
-        })
-      })
-      .then(data => data.json())
-      .then(data => {
-        messagesCached[userSelected] = data
-        messagesCached[userSelected]['last_stay'] = `${data['last_stay']}`
-        data.forEach(messageData => { createMessages(messageData) })
-      })
+      document.querySelector('#another-painel #user-name').textContent = data.name
+      document.querySelector('#another-painel #user-name').appendChild(otherEmail)
+      document.querySelector('#another-painel #user-photo').src = data.photoURL
+      document.querySelector(`#another-painel #state`).textContent = calculateDateLastStay(userStates[data.email])
     }
-  } else if (message) {  
+  
+    fetch(`/messages`, {
+      "method": "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      "body": JSON.stringify({
+        "users": [
+          userData.email,
+          data.email
+        ]
+      })
+    })
+    .then(data => data.json())
+    .then(dt => {
+      messagesCached[data.email] = dt
+      messagesCached[data.email]['last_stay'] = `${dt['last_stay']}`
+      if (userSelected === data.email) {
+        dt.forEach(messageData => { createMessages(messageData) })
+        document.querySelector("#message-studio").scrollTop = document.querySelector("#message-studio").scrollHeight;
+      }
+    })
+  } else if (message) {
+    document.querySelector("#message-studio").innerHTML = ""
+    
     if (message["from"] == userData.email) {
       if (!messagesCached[message["to"]]) {
         messagesCached[message["to"]] = []
       }
     
       messagesCached[message["to"]].push(message)
-      messagesCached[message["to"]].forEach(messageData => { createMessages(messageData) })
+
+      if (userSelected === message["to"]) {
+        messagesCached[message["to"]].forEach(messageData => { createMessages(messageData) })
+      }
     } else {
       if (!messagesCached[message["from"]]) {
         messagesCached[message["from"]] = []
       }
 
       messagesCached[message["from"]].push(message)
-      messagesCached[message["from"]].forEach(messageData => { createMessages(messageData) })
+      if (userSelected === message["from"]) {
+        messagesCached[message["from"]].forEach(messageData => { createMessages(messageData) })
+      }
     }
+
+    document.querySelector("#message-studio").scrollTop = document.querySelector("#message-studio").scrollHeight;
   }
 }
 

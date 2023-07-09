@@ -219,3 +219,7 @@ span.actions {
     align-items: center;
     flex-shrink: 0;
 }
+
+.message.selected {
+    background: #35364b;
+}

@@ -77,17 +77,49 @@ const messagesClick = event => {
 
   event: Event
   */
-  messagesControll.style.display = 'block'   
+  userSelected = `${event.target.id}@gmail.com`
+  let selectedElements = document.getElementsByClassName('selected')
 
-  fetch(`/search/users/${event.target.id}@gmail.com`)
-  .then(data => data.json())
-  .then(data => {
-    updateMessages({
-      "name": data.name,
-      "email": data.email,
-      "photoURL": data.photoURL,
-      "last_stay": calculateDateLastStay(data['last_stay'])
-    }, false)
+  if (selectedElements.length > 0) {
+    for (let element of selectedElements) {
+      element.classList.remove('selected')
+    }
+  }
+
+  messagesControll.style.display = 'block'   
+  console.log('Uma mensagem foi clicada.')
+
+  let chat = document.querySelector(`div#${event.target.id}.message`)
+  chat.classList.add('selected')
+
+  if (chat.querySelector('#counter')) {
+    chat.querySelector('#counter').remove();
+  }
+  
+  document.querySelector("#message-studio").innerHTML = ""
+
+  fetch("/read_messages", {
+    "method": "POST",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": JSON.stringify({
+      "users": [`${event.target.id}@gmail.com`, userData.email]
+    })
+  })  
+  .then(() => {
+    fetch(`/search/users/${event.target.id}@gmail.com`)
+    .then(data => data.json())
+    .then(data => {
+      updateMessages({
+        "name": data.name,
+        "email": data.email,
+        "photoURL": data.photoURL,
+        "last_stay": calculateDateLastStay(data['last_stay'])
+      }, false)
+    })
+  }).catch((e) => {
+    console.error(e)
   })
 }
 
