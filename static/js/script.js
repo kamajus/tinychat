@@ -1,4 +1,4 @@
-function calculateDateDifference(date) {
+const calculateDateDifference = date => {
   var nowDate = moment(new Date().toISOString());
   var endDate = moment(date);
 
@@ -87,7 +87,6 @@ const messagesClick = event => {
   }
 
   messagesControll.style.display = 'block'   
-  console.log('Uma mensagem foi clicada.')
 
   let chat = document.querySelector(`div#${event.target.id}.message`)
   chat.classList.add('selected')

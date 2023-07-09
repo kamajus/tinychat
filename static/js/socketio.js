@@ -11,8 +11,7 @@ sio.on('pong', (user) => {
 
 sio.on('message', data => {
     let targetUserSearch = data.messages.from.email === userData.email?data.messages.to.email:data.messages.from.email
-    console.log(userSelected, targetUserSearch)
-
+    
     if (data.messages.from.email === userData.email || data.messages.to.email === userData.email) {
         if (userSelected === targetUserSearch) {
             updateMessages(false, {

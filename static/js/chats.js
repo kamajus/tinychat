@@ -1,3 +1,7 @@
+const reduceChatTextContent = content => {
+  return content.length > 25?content.slice(0, 24)+"...":content
+}
+
 const updateRealtimeChat = data => {
   /*
   Update chats position and add new chat
@@ -14,7 +18,7 @@ const updateRealtimeChat = data => {
 
   if (chatExists) {
     let chat = document.querySelector(`div#${chatEmailFormated}.message`)
-    chat.querySelector('p').textContent = data.messages["content"]
+    chat.querySelector('p').textContent = reduceChatTextContent(data.messages["content"])
     chat.querySelector('#date').textContent = calculateDateDifference(data.messages["created_at"])
 
     if (userSelected === data.messages.from.email) {
@@ -91,7 +95,7 @@ const createNewChats = chat => {
   innerDiv.appendChild(dateSpan);
 
   const messageParagraph = document.createElement("p");
-  messageParagraph.textContent = chat.messages.content;
+  messageParagraph.textContent = reduceChatTextContent(chat.messages.content);
 
   contentDiv.appendChild(innerDiv);
   contentDiv.appendChild(messageParagraph);
@@ -161,7 +165,7 @@ const updateChats = user => {
       innerDiv.appendChild(dateSpan);
 
       let messageParagraph = document.createElement("p");
-      messageParagraph.textContent = chat.messages[chat.messages.length - 1].content;
+      messageParagraph.textContent = reduceChatTextContent(chat.messages[chat.messages.length - 1].content);
 
       contentDiv.appendChild(innerDiv);
       contentDiv.appendChild(messageParagraph);
