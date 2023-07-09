@@ -121,6 +121,7 @@ sendMessageElement.addEventListener('click', () => {
       'content': messageText.value
     })
   
+    messageHasContent = false
     messageText.value = ""
   }
 })

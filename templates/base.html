@@ -16,45 +16,57 @@
         let isOtherWriting = false;
         let userSelected, userData;
 
-        firebase.initializeApp({
-            apiKey: "AIzaSyAwLawFqBXpugTFrGZ47Omd1hx7vJQZhqA",
-            authDomain: "open-chat-44975.firebaseapp.com",
-            projectId: "open-chat-44975",
-            storageBucket: "open-chat-44975.appspot.com",
-            messagingSenderId: "419750701729",
-            appId: "1:419750701729:web:e959b1da9d9534eb869ee0"
-        });
+        fetch('/firebase-config')
+        .then((r) => r.json())
+        .then(data => {
+            firebase.initializeApp(data);
 
-        const provider = new firebase.auth.GoogleAuthProvider();
+            const provider = new firebase.auth.GoogleAuthProvider();
 
-        async function userLogin(user)  {
-            fetch('/login', {
-                "method": "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    "name": user["displayName"],
-                    "email": user["email"],
-                    "photoURL": user["photoURL"]
+            async function userLogin(user)  {
+                fetch('/login', {
+                    "method": "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        "name": user["displayName"],
+                        "email": user["email"],
+                        "photoURL": user["photoURL"]
+                    })
+                }).then(() => {
+                    onLogin(user.email)
+                }).catch(error => {
+                    console.error(error)
                 })
-            }).then(() => {
-                onLogin(user.email)
-            }).catch(error => {
-                console.error(error)
-            })
-        }
+            }
 
-        function googleSignIn() {
-            firebase.auth()
-            .signInWithPopup(provider)
-            .then((res) => {
-                userData = res.user;
-                userLogin(userData)
-            }).catch((error) => {
-                console.error(error)
-            });
-        }
+            function googleSignIn() {
+                firebase.auth()
+                .signInWithPopup(provider)
+                .then((res) => {
+                    userData = res.user;
+                    userLogin(userData)
+                }).catch((error) => {
+                    console.error(error)
+                });
+            }
+
+            firebase.auth().onAuthStateChanged(user => {
+            userData = user
+
+            if (!!user && window.document.location.pathname === "/login") {
+                window.document.location.pathname = "/";
+            } else if (!!!user && window.document.location.pathname === "/") {
+                window.document.location.pathname = "/login";
+            }
+
+            updateUserInfo(user)
+            userLogin(user)
+        });
+    }).catch((e) => {
+        throw new Error(e)
+    })
     </script>
     <script src="{{ url_for('static', filename='js/firebase.js') }}"></script>
     {% block head %}{% endblock %}

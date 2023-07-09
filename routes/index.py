@@ -1,12 +1,30 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from flask_pydantic import validate
 from pydantic import validate_email
 from models import UserModel, UsersList
-from db import db, pymongo
+from db import db
 
 from datetime import datetime
+from os import getenv
+from dotenv import load_dotenv
+
+import pymongo
 
 index = Blueprint('index', __name__)
+load_dotenv()
+
+@index.get('/firebase-config')
+def get_firebase_config():
+    firebase_config = {
+        'apiKey': getenv('FIREBASE_API_KEY'),
+        'authDomain': getenv('FIREBASE_AUTH_DOMAIN'),
+        'projectId': getenv('FIREBASE_PROJECT_ID'),
+        'storageBucket': getenv('FIREBASE_STORAGE_BUCKET'),
+        'messagingSenderId': getenv('FIREBASE_MESSAGING_SENDER_ID'),
+        'appId': getenv('FIREBASE_APP_ID')
+    }
+    
+    return jsonify(firebase_config)
 
 @index.post('/login')
 @validate()
