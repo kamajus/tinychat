@@ -99,5 +99,3 @@ def un_typing(data):
         "to_email": data["to_email"]
     })
     
-    
-    

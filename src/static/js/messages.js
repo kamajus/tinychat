@@ -20,7 +20,7 @@ messageText.addEventListener('input', (event) => {
 
 });
 
-function createMessages(message) {
+const createMessages = message => {
   /*
   Adicionando novas mensagens ao chat
 
@@ -28,7 +28,11 @@ function createMessages(message) {
   */
   const messageBox = document.createElement("message-box");
   
-  messageBox.className = (userData.email === message.from_email)?"message-box me":"message-box you"
+  if (message.from_email.email) {
+    messageBox.className = (userData.email === message.from_email.email)?"message-box me":"message-box you"
+  } else {
+    messageBox.className = (userData.email === message.from_email)?"message-box me":"message-box you"
+  }
 
   const messageDate = document.createElement("span");
   messageDate.id = "message-box-date"
@@ -44,7 +48,7 @@ function createMessages(message) {
   messageStudio.appendChild(messageBox)
 }
 
-function updateMessages(data, message) {
+const updateMessages = (data, message) => {
   /*
   Atualiza a lista de mensagens de um certo chat
 
@@ -53,7 +57,7 @@ function updateMessages(data, message) {
   */
   if (data) {
     let otherEmail = document.createElement("mark")
-
+    
     if (userSelected === data.email) {
       otherEmail.textContent = "#"+data.email
       otherEmail.className = "email"
@@ -63,53 +67,21 @@ function updateMessages(data, message) {
       document.querySelector('#another-painel #user-photo').src = data.photoURL
       document.querySelector(`#another-painel #state`).textContent = calculateDateLastStay(data.last_stay)
     }
-  
-    fetch(`/messages`, {
-      "method": "POST",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      "body": JSON.stringify({
-        "users": [
-          userData.email,
-          data.email
-        ]
-      })
-    })
-    .then(data => data.json())
-    .then(dt => {
-      messagesCached[data.email] = dt
-      messagesCached[data.email]['last_stay'] = `${dt['last_stay']}`
-      if (userSelected === data.email) {
-        dt.forEach(messageData => { createMessages(messageData) })
-        document.querySelector("#message-studio").scrollTop = document.querySelector("#message-studio").scrollHeight;
-      }
-    })
-  } else if (message) {
-    document.querySelector("#message-studio").innerHTML = ""
-    
+
+    messageStudio.innerHTML = ""
+    messageStudio.scrollTop = messageStudio.scrollHeight;
+
+    if (messagesCached[data.email]) messagesCached[data.email].forEach(messageData => { createMessages(messageData) })
+  } else if (message && (userSelected == message["from_email"] || userSelected == message["to_email"])) {
+    messageStudio.innerHTML = ""
+
     if (message["from_email"] == userData.email) {
-      if (!messagesCached[message["to_email"]]) {
-        messagesCached[message["to_email"]] = []
-      }
-    
-      messagesCached[message["to_email"]].push(message)
-
-      if (userSelected === message["to_email"]) {
-        messagesCached[message["to_email"]].forEach(messageData => { createMessages(messageData) })
-      }
+      messagesCached[message["to_email"]].forEach(messageData => { createMessages(messageData) })
     } else {
-      if (!messagesCached[message["from_email"]]) {
-        messagesCached[message["from_email"]] = []
-      }
-
-      messagesCached[message["from_email"]].push(message)
-      if (userSelected === message["from_email"]) {
-        messagesCached[message["from_email"]].forEach(messageData => { createMessages(messageData) })
-      }
+      messagesCached[message["from_email"]].forEach(messageData => { createMessages(messageData) })
     }
 
-    document.querySelector("#message-studio").scrollTop = document.querySelector("#message-studio").scrollHeight;
+    messageStudio.scrollTop = messageStudio.scrollHeight;
   }
 }
 

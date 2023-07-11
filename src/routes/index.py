@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request
 from flask_pydantic import validate
 from pydantic import validate_email
 from models import UserModel, UsersList
@@ -50,7 +50,6 @@ def get_users(email: str):
 @index.post('/messages')
 @validate()
 def get_messages():    
-    print(f'users: {request.json["users"]}')
     UsersList(users=request.json["users"])
     
     chat = db.chats.find_one({"users": {"$all":request.json["users"]}})
@@ -61,7 +60,6 @@ def get_messages():
 @index.put('/read_messages')
 @validate()
 def read_messages():
-    print(f'users: {request.json["users"]}')
     UsersList(users=request.json["users"])
     response = None
     

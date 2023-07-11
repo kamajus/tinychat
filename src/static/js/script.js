@@ -93,6 +93,11 @@ const messagesClick = event => {
   event: Event
   */
   userSelected = `${event.target.id}@gmail.com`
+  console.log(`${event.target.id}@gmail.com`)
+
+  document.querySelector("#message-studio").innerHTML = ""
+  messagesControll.style.display = 'block' 
+  
   let selectedElements = document.getElementsByClassName('selected')
 
   if (selectedElements.length > 0) {
@@ -101,41 +106,29 @@ const messagesClick = event => {
     }
   }
 
-  messagesControll.style.display = 'block'   
-
-  console.log(`div#${event.target.id}.message`)
   let chat = document.querySelector(`div#${event.target.id}.message`)
   chat.classList.add('selected')
+  
+  updateMessages({
+    "name": event.target.dataset.name,
+    "email": event.target.dataset.email,
+    "photoURL": event.target.dataset.photoURL,
+    "last_stay": event.target.dataset.last_stay
+  }, false)
 
   if (chat.querySelector('#counter')) {
+    fetch("/read_messages", {
+      "method": "PUT",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": JSON.stringify({
+        "users": [`${event.target.id}@gmail.com`, userData.email]
+      })
+    })
+
     chat.querySelector('#counter').remove();
   }
-  
-  document.querySelector("#message-studio").innerHTML = ""
-
-  fetch("/read_messages", {
-    "method": "PUT",
-    "headers": {
-      "Content-Type": "application/json"
-    },
-    "body": JSON.stringify({
-      "users": [`${event.target.id}@gmail.com`, userData.email]
-    })
-  })  
-  .then(() => {
-    fetch(`/search/users/${event.target.id}@gmail.com`)
-    .then(data => data.json())
-    .then(data => {
-      updateMessages({
-        "name": data.name,
-        "email": data.email,
-        "photoURL": data.photoURL,
-        "last_stay": data.last_stay
-      }, false)
-    })
-  }).catch((e) => {
-    console.error(e)
-  })
 }
 
 newMessage.addEventListener('click', () => { popUp.style.display = 'flex' })
@@ -147,9 +140,6 @@ userOptions.addEventListener('click', () => {
 popUpForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
-  console.log('Evento disparado!')
-  console.log(e.target.elements.email.value)
-
   if (e.target.elements.email.value !== userData.email) {
     if (myFriends.includes(e.target.elements.email.value)) {
       fetch(`/chats/${userData.email}`)
@@ -160,17 +150,16 @@ popUpForm.addEventListener('submit', (e) => {
         document.querySelector('div#popup .message').id = targetChat.user.email.replace('@gmail.com', '')
         document.querySelector('div#popup .message').style.display = 'flex'
         document.querySelector('div#popup > p').style.display = "none";
+        document.querySelector('div#popup #user-photo').src = targetChat.user.photoURL;
+        document.querySelector('div#popup #user-name').textContent = targetChat.user.name;
+        
+        document.querySelector('div#popup .message').dataset.name = targetChat.user.name;
+        document.querySelector('div#popup .message').dataset.email = targetChat.user.email;
+        document.querySelector('div#popup .message').dataset.photoURL = targetChat.user.photoURL;
 
-        const userPhoto = document.querySelector('div#popup #user-photo');
-        const userName = document.querySelector('div#popup #user-name');
         const date = document.querySelector('div#popup #date');
         const messageParagraph = document.querySelector('div#popup #content p');
         const counterSpan = document.querySelector('div#popup #counter');
-        
-        
-        userPhoto.src = targetChat.user.photoURL;
-        userName.textContent = targetChat.user.name;
-        date.textContent = targetChat.user.time;
 
         date.textContent = calculateDateDifference(targetChat.messages[targetChat.messages.length - 1]["created_at"]);
         messageParagraph.textContent = reduceChatTextContent(targetChat.messages[targetChat.messages.length - 1].content);
@@ -181,8 +170,7 @@ popUpForm.addEventListener('submit', (e) => {
             unreadedChatCount += 1;
           }
         }
-  
-
+        
         if (unreadedChatCount !== 0) {
           counterSpan.textContent = unreadedChatCount;
           counterSpan.style.display = "flex"
@@ -206,16 +194,17 @@ popUpForm.addEventListener('submit', (e) => {
         document.querySelector('div#popup .message').id = data.email.replace('@gmail.com', '')
         document.querySelector('div#popup').onclick = messagesClick
 
-        const userPhoto = document.querySelector('div#popup #user-photo');
-        const userName = document.querySelector('div#popup #user-name');
-        const date = document.querySelector('div#popup #date');
+        document.querySelector('div#popup #user-photo').src = data.photoURL;
+        document.querySelector('div#popup #user-name').textContent = data.name;
+
+        document.querySelector('div#popup .message').dataset.name = data.name;
+        document.querySelector('div#popup .message').dataset.email = data.email;
+        document.querySelector('div#popup .message').dataset.photoURL = data.photoURL;
+        document.querySelector('div#popup .message').dataset.last_stay = "...";
+
         const messageParagraph = document.querySelector('div#popup #content p');
         const counterSpan = document.querySelector('div#popup #counter');
-        
-        userPhoto.src = data.photoURL;
-        userName.textContent = data.name;
-        date.textContent = data.time;
-        
+      
         if (data.content == "" || !messageParagraph.textContent) messageParagraph.textContent = "Óla já estou a usar o Open-chat"
         document.querySelector('div#popup > p').style.display = "none";
 

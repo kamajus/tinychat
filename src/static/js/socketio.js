@@ -9,39 +9,36 @@ sio.on('pong', (user) => {
     }
 })
 
-sio.on('message', data => {
-    let targetUserSearch = data.messages.from_email.email === userData.email?data.messages.to_email.email:data.messages.from_email.email
-    
+sio.on('message', data => {    
     if (data.messages.from_email.email === userData.email || data.messages.to_email.email === userData.email) {
-        if (userSelected === targetUserSearch) {
-            updateMessages(false, {
-                "from_email": data.messages.from_email.email,
-                "to_email": data.messages.to_email.email,
-                "content": data.messages.content,
-                "created_at": data.messages.created_at
-            });
-        } else {
-            fetch(`/search/users/${targetUserSearch}`)
-            .then(data => data.json())
-            .then(data => {
-                updateMessages({
-                    "name": data.name,
-                    "email": data.email,
-                    "photoURL": data.photoURL,
-                    "last_stay": calculateDateLastStay(data['last_stay'])
-                }, false)
-            })
-        }
-        
         updateRealtimeChat(data)
 
-        if (data.messages.from_email.email === userData.email && !myFriends.includes(data.messages.to_email.email)) {
-            myFriends.push(data.messages.to_email.email)
-        }
+        if (data.messages.from_email.email === userData.email) {
+            if (messagesCached[data.messages.to_email.email]) {
+                messagesCached[data.messages.to_email.email].push(data.messages)
+            } else {
+                messagesCached[data.messages.to_email.email] = []
+                messagesCached[data.messages.to_email.email].push(data.messages)
+            }
+            if (!myFriends.includes(data.messages.to_email.email)) myFriends.push(data.messages.to_email.email)
+        } 
         
-        if (data.messages.to_email.email === userData.email && !myFriends.includes(data.messages.from_email.email)) {
-            myFriends.push(data.messages.from_email.email)
+        if (data.messages.to_email.email === userData.email) {
+            if (messagesCached[data.messages.from_email.email]) {
+                messagesCached[data.messages.from_email.email].push(data.messages)
+            } else {
+                messagesCached[data.messages.from_email.email] = []
+                messagesCached[data.messages.from_email.email].push(data.messages)
+            }
+            if (!myFriends.includes(data.messages.from_email.email)) myFriends.push(data.messages.from_email.email)
         }
+
+        updateMessages(false, {
+            "from_email": data.messages.from_email.email,
+            "to_email": data.messages.to_email.email,
+            "content": data.messages.content,
+            "created_at": data.messages.created_at
+        });
     }
 })
 

@@ -21,7 +21,6 @@ const updateRealtimeChat = data => {
     chat.querySelector('p').textContent = reduceChatTextContent(data.messages["content"])
     chat.querySelector('#date').textContent = calculateDateDifference(data.messages["created_at"])
 
-    console.log(data.messages.from_email.email, data.messages.to_email.email)
     if (userSelected === data.messages.from_email.email) {
       fetch("/read_messages", {
         "method": "POST",
@@ -34,7 +33,6 @@ const updateRealtimeChat = data => {
       }) .catch((e) => {
         console.log(e)
       })
-
     } else if (data.messages.was_readed === false && data.messages.from_email.email !== userData.email && userSelected !== data.messages.to_email.email) {
       if (!chat.querySelector('#counter')) {
         let counter = document.createElement('span');
@@ -74,6 +72,11 @@ const createNewChats = chat => {
 
   div.id = targetUserData.email.replace("@gmail.com", "");
   div.onclick = messagesClick
+
+  div.dataset.name = targetUserData.name;
+  div.dataset.email = targetUserData.email;
+  div.dataset.photoURL = targetUserData.photoURL;
+  div.dataset.last_stay = targetUserData.last_stay;
 
   const img = document.createElement("img");
   img.src = targetUserData.photoURL;
@@ -130,6 +133,8 @@ const updateChats = user => {
   Fez um requisição para o servidor para ir buscar todos os chats do usuário
   
   user: Objecto user do firebase;
+
+  Obs: Essa função é apenas é executada uma vez.
   */
   myFriends = [] // Lista de amigos do usuário logado
 
@@ -143,6 +148,13 @@ const updateChats = user => {
       div.className = "message";
       div.id = chat.user.email.replace("@gmail.com", "");
       div.onclick = messagesClick
+
+      div.dataset.name = chat.user.name;
+      div.dataset.email = chat.user.email;
+      div.dataset.photoURL = chat.user.photoURL;
+      div.dataset.last_stay = chat.user.last_stay;
+
+      messagesCached[div.dataset.email] = chat.messages
 
       myFriends.push(chat.user.email)
 
