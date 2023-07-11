@@ -110,6 +110,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
+    position: relative;
 }
 
 .user-painel > span {
@@ -218,7 +219,6 @@ span.actions {
     cursor: pointer;
     align-items: center;
     flex-shrink: 0;
-    position: relative;
 }
 
 .message.selected {
@@ -227,7 +227,7 @@ span.actions {
 
 #mini-popup {
     width: 200px;
-    padding: 10px;
+    padding: 15px;
 
     border-radius: 4px;
     border: 1px solid rgba(0, 0, 0, 0.50);
@@ -235,8 +235,8 @@ span.actions {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.1);
     
     position: absolute;
-    bottom: 0;
-    left: 20px;
+    top: -60px;
+    right: -210px;
 
     display: none;
     align-items: center;

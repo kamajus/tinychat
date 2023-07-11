@@ -10,22 +10,6 @@ import pymongo
 
 index = Blueprint('index', __name__)
 
-@index.delete('/delete_account/<email>')
-@validate()
-def delete_account(email):
-    validate_email(email)
-    
-    response = None
-    
-    try:
-        db.users.delete_one({"email": email})
-        db.chats.delete_many({"users": email})
-        response = "deleted", 200
-    except Exception as error:
-        response = error, 200
-        
-    return response
-
 @index.post('/login')
 @validate()
 def login():

@@ -37,17 +37,13 @@
             </div>
         </span>
         <div id="user-options">
-            <img src="{{ url_for('static', filename='img/options.svg') }}">
-            <div id="mini-popup">
-                <button id="exit" onclick="deleteAccount()">
-                    <img src="{{ url_for('static', filename='img/x.svg') }}">
-                    Encerrar sua conta
-                </button>
-                <button id="logout" onclick="logOut()">
-                    <img src="{{ url_for('static', filename='img/sign-out.svg') }}">
-                    Terminar sessão
-                </button>
-            </div>
+            <img src="{{ url_for('static', filename='img/options.svg') }}">      
+        </div>
+        <div id="mini-popup">
+            <button id="logout" onclick="logOut()">
+                <img src="{{ url_for('static', filename='img/x.svg') }}">
+                Terminar sessão
+            </button>
         </div>
     </div>
 </div>
@@ -68,8 +64,6 @@
             </span>
         </div>
         <span class="actions">
-            <span id="call"><img src="{{ url_for('static', filename='img/call.svg') }}" id="call"></span>
-            <span id="video-call"><img src="{{ url_for('static', filename='img/video-call.svg') }}" id="video-call"></span>
             <span id="options"><img src="{{ url_for('static', filename='img/options.svg') }}" id="options"></span>
         </span>
     </div>

@@ -1,3 +1,18 @@
+searchBar.forEach((s) => {
+  s.querySelector('input')
+  .addEventListener('focus', (e) => {
+    e.target.parentNode.style.borderColor = "#8b6cef"
+  })
+})
+
+
+searchBar.forEach((s) => {
+  s.querySelector('input')
+  .addEventListener('blur', (e) => {
+    e.target.parentNode.style.borderColor = "black"
+  })
+})
+
 const calculateDateDifference = date => {
   var nowDate = moment(new Date().toISOString());
   var endDate = moment(date);
@@ -88,6 +103,7 @@ const messagesClick = event => {
 
   messagesControll.style.display = 'block'   
 
+  console.log(`div#${event.target.id}.message`)
   let chat = document.querySelector(`div#${event.target.id}.message`)
   chat.classList.add('selected')
 
@@ -131,13 +147,17 @@ userOptions.addEventListener('click', () => {
 popUpForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
+  console.log('Evento disparado!')
+  console.log(e.target.elements.email.value)
+
   if (e.target.elements.email.value !== userData.email) {
     if (myFriends.includes(e.target.elements.email.value)) {
       fetch(`/chats/${userData.email}`)
       .then(data => data.json())
       .then(chats => {
         targetChat = chats.filter(item => item.user.email === e.target.elements.email.value)[0]
-        document.querySelector('div#popup').onclick = messagesClick
+        document.querySelector('div#popup .message').onclick = messagesClick
+        document.querySelector('div#popup .message').id = targetChat.user.email.replace('@gmail.com', '')
         document.querySelector('div#popup .message').style.display = 'flex'
         document.querySelector('div#popup > p').style.display = "none";
 
@@ -205,8 +225,9 @@ popUpForm.addEventListener('submit', (e) => {
       });
     }
   } else {
-    document.querySelector('div#popup > p').textContent = '❌ Não podes conversar consigo mesmo 💬'
     document.querySelector('div#popup .message').style.display = 'none'
+    document.querySelector('div#popup > p').style.display = "block";
+    document.querySelector('div#popup > p').textContent = '❌ Não podes conversar consigo mesmo 💬'
     throw new Error('❌ Não podes conversar consigo mesmo 💬')
   }
 });
@@ -214,8 +235,10 @@ popUpForm.addEventListener('submit', (e) => {
 window.addEventListener("click", event => {
   if (event.target !== popUp && event.target !== newMessage && !popUp.contains(event.target)) {
     popUp.style.display = "none";
-    document.querySelector('div#popup > p').textContent = 'Encontre usuários e começe a conversar 💬'
-    document.querySelector('div#popup .message').style.display = 'none'
+    popUp.querySelector('.message').style.display = 'none'
+    document.querySelector('div#popup input').value = ""
+    document.querySelector('div#popup > p').style.display = "block";
+    document.querySelector('div#popup > p').textContent = "Encontre usuários e começe a conversar 💬"
   }
 
   if (event.target !== miniPopUp && event.target !== userOptions) {
