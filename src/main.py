@@ -6,7 +6,6 @@ from routes.views import views
 from routes.sockets import sockets, sio
 
 app = Flask(__name__)
-
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 app.register_blueprint(index)

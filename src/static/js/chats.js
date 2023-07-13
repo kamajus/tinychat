@@ -1,6 +1,4 @@
-const reduceChatTextContent = content => {
-  return content.length > 25?content.slice(0, 24)+"...":content
-}
+const reduceText = text => text.length > 25?text.slice(0, 24)+"...":text
 
 const updateRealtimeChat = data => {
   /*
@@ -10,15 +8,14 @@ const updateRealtimeChat = data => {
   */
 
   let targetUserData = (userData.email === data.messages.to_email.email)?data.messages.from_email.email:data.messages.to_email.email;
-
-  chatEmailFormated = targetUserData.replace('@gmail.com', '')
-
   let chatExists = false
-  chatExists = myFriends.includes(targetUserData)?true:false
+  
+  chatEmailFormated = targetUserData.replace('@gmail.com', '')
+  chatExists = friends.includes(targetUserData)?true:false
 
   if (chatExists) {
     let chat = document.querySelector(`div#${chatEmailFormated}.message`)
-    chat.querySelector('p').textContent = reduceChatTextContent(data.messages["content"])
+    chat.querySelector('p').textContent = reduceText(data.messages["content"])
     chat.querySelector('#date').textContent = calculateDateDifference(data.messages["created_at"])
 
     if (userSelected === data.messages.from_email.email) {
@@ -31,7 +28,7 @@ const updateRealtimeChat = data => {
           "users": [data.messages.from_email.email, data.messages.to_email.email]
         })
       }) .catch((e) => {
-        console.log(e)
+        console.error(e)
       })
     } else if (data.messages.was_readed === false && data.messages.from_email.email !== userData.email && userSelected !== data.messages.to_email.email) {
       if (!chat.querySelector('#counter')) {
@@ -51,10 +48,10 @@ const updateRealtimeChat = data => {
     }
 
     messageContainer.insertBefore(chat, messageContainer.firstChild)
-  } else { messageContainer.insertBefore(createNewChats(data), messageContainer.firstChild) }
+  } else { messageContainer.insertBefore(createChat(data), messageContainer.firstChild) }
 }
 
-const createNewChats = chat => {
+const createChat = chat => {
   /*
   Add new chat
 
@@ -64,11 +61,15 @@ const createNewChats = chat => {
   let unreadedChatCount = 0;
 
   const div = document.createElement("div");
-  div.className = "message not_readed";
+  const img = document.createElement("img");
+  const contentDiv = document.createElement("div");
+  const innerDiv = document.createElement("div");
+  const userNameSpan = document.createElement("span");
+  const dateSpan = document.createElement("span");
+  const messageParagraph = document.createElement("p");
+  const counterSpan = document.createElement("span");
 
-  if (chat.was_readed) {
-    div.className += "message"
-  }
+  div.className = "message";
 
   div.id = targetUserData.email.replace("@gmail.com", "");
   div.onclick = messagesClick
@@ -78,33 +79,23 @@ const createNewChats = chat => {
   div.dataset.photoURL = targetUserData.photoURL;
   div.dataset.last_stay = targetUserData.last_stay;
 
-  const img = document.createElement("img");
   img.src = targetUserData.photoURL;
   img.id = "user-photo";
-  
-  const contentDiv = document.createElement("div");
+
   contentDiv.id = "content";
 
-  const innerDiv = document.createElement("div");
-
-  const userNameSpan = document.createElement("span");
   userNameSpan.id = "user-name";
   userNameSpan.textContent = targetUserData.name;
 
-  const dateSpan = document.createElement("span");
   dateSpan.id = "date";
   dateSpan.textContent = calculateDateDifference(chat.messages["created_at"])
   
   innerDiv.appendChild(userNameSpan);
   innerDiv.appendChild(dateSpan);
 
-  const messageParagraph = document.createElement("p");
-  messageParagraph.textContent = reduceChatTextContent(chat.messages.content);
-
   contentDiv.appendChild(innerDiv);
   contentDiv.appendChild(messageParagraph);
 
-  const counterSpan = document.createElement("span");
   counterSpan.id = "counter";
 
   try {
@@ -114,13 +105,17 @@ const createNewChats = chat => {
       }
     }
   } catch {
-    if (chat.messages.from_email.email !== userData.email) {
-      unreadedChatCount = 1;
-    }
+    if (chat.messages.from_email.email !== userData.email)  unreadedChatCount = 1;
   }
 
   counterSpan.textContent = unreadedChatCount;
-  if (unreadedChatCount !== 0) div.appendChild(counterSpan);
+
+  if (unreadedChatCount !== 0) {
+    div.appendChild(counterSpan);
+    messageParagraph.textContent = reduceText(chat.messages.content);
+  } else {
+    messageParagraph.innerHTML = `<strong>${reduceText(chat.messages.content)}</strong>`;
+  }
   
   div.appendChild(img);
   div.appendChild(contentDiv);
@@ -136,17 +131,26 @@ const updateChats = user => {
 
   Obs: Essa função é apenas é executada uma vez.
   */
-  myFriends = [] // Lista de amigos do usuário logado
+  friends = [] // Lista de amigos do usuário logado
 
   fetch(`/chats/${user.email}`)
   .then(data => data.json())
   .then(chats => {
     chats.forEach(chat => {
-      let unreadedChatCount = 0;
       let div = document.createElement("div");
+      let img = document.createElement("img");
+      let contentDiv = document.createElement("div");
+      let innerDiv = document.createElement("div");
+      let userNameSpan = document.createElement("span");
+      let dateSpan = document.createElement("span");
+      let counterSpan = document.createElement("span");
+      let messageParagraph = document.createElement("p");
+      
+      let unreadedChatCount = 0;
 
-      div.className = "message";
       div.id = chat.user.email.replace("@gmail.com", "");
+      div.className = "message";
+
       div.onclick = messagesClick
 
       div.dataset.name = chat.user.name;
@@ -154,38 +158,33 @@ const updateChats = user => {
       div.dataset.photoURL = chat.user.photoURL;
       div.dataset.last_stay = chat.user.last_stay;
 
+      chatsCached[div.dataset.email] = {
+        "user": chat.user,
+        "messages": chat.messages
+      }
+
       messagesCached[div.dataset.email] = chat.messages
+      friends.push(chat.user.email)
 
-      myFriends.push(chat.user.email)
-
-      let img = document.createElement("img");
       img.src = chat.user.photoURL;
       img.id = "user-photo";
 
-      let contentDiv = document.createElement("div");
       contentDiv.id = "content";
 
-      let innerDiv = document.createElement("div");
-
-      let userNameSpan = document.createElement("span");
       userNameSpan.id = "user-name";
       userNameSpan.textContent = chat.user.name;
 
-      let dateSpan = document.createElement("span");
       dateSpan.id = "date";
-
       dateSpan.textContent = calculateDateDifference(chat.messages[chat.messages.length - 1]["created_at"]);
       
       innerDiv.appendChild(userNameSpan);
       innerDiv.appendChild(dateSpan);
 
-      let messageParagraph = document.createElement("p");
-      messageParagraph.textContent = reduceChatTextContent(chat.messages[chat.messages.length - 1].content);
+      messageParagraph.textContent = reduceText(chat.messages[chat.messages.length - 1].content);
 
       contentDiv.appendChild(innerDiv);
       contentDiv.appendChild(messageParagraph);
 
-      const counterSpan = document.createElement("span");
       counterSpan.id = "counter";
 
       for (ct of chat.messages) {

@@ -14,23 +14,21 @@ sio.on('message', data => {
         updateRealtimeChat(data)
 
         if (data.messages.from_email.email === userData.email) {
-            if (messagesCached[data.messages.to_email.email]) {
-                messagesCached[data.messages.to_email.email].push(data.messages)
-            } else {
+            if (!messagesCached[data.messages.to_email.email]) {
                 messagesCached[data.messages.to_email.email] = []
-                messagesCached[data.messages.to_email.email].push(data.messages)
             }
-            if (!myFriends.includes(data.messages.to_email.email)) myFriends.push(data.messages.to_email.email)
+            
+            messagesCached[data.messages.to_email.email].push(data.messages)
+            if (!friends.includes(data.messages.to_email.email)) friends.push(data.messages.to_email.email)
         } 
         
         if (data.messages.to_email.email === userData.email) {
-            if (messagesCached[data.messages.from_email.email]) {
-                messagesCached[data.messages.from_email.email].push(data.messages)
-            } else {
+            if (!messagesCached[data.messages.from_email.email]) {
                 messagesCached[data.messages.from_email.email] = []
-                messagesCached[data.messages.from_email.email].push(data.messages)
             }
-            if (!myFriends.includes(data.messages.from_email.email)) myFriends.push(data.messages.from_email.email)
+
+            messagesCached[data.messages.from_email.email].push(data.messages)
+            if (!friends.includes(data.messages.from_email.email)) friends.push(data.messages.from_email.email)
         }
 
         updateMessages(false, {

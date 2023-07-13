@@ -17,5 +17,3 @@ except Exception as e:
 else:
     console.log('[bold green]DB CONNECTED[/]')
     
-
-    

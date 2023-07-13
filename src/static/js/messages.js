@@ -2,7 +2,7 @@ let messageHasContent = false // A mensagem tem conteúdo?
 let writingMessageTimer;
 
 messageText.addEventListener('input', (event) => {
-  clearTimeout(writingMessageTimer); // Limpando o timer
+  clearTimeout(writingMessageTimer);
 
   if (event.target.value.trim().length === 0) {
     messageHasContent = false
@@ -12,21 +12,22 @@ messageText.addEventListener('input', (event) => {
     messageImage.src = "/static/img/with-message.svg";
   }
 
-  typingMessage(); // O usuário x está escrevendo...
+  typingMessage();
 
   writingMessageTimer = setTimeout(() => {
-    unTypingMessage(); // O usuário x não está escrevendo...
+    unTypingMessage();
   }, 1000);
 
 });
 
 const createMessages = message => {
   /*
-  Adicionando novas mensagens ao chat
-
   message: conteúdo da mensagem
   */
+
   const messageBox = document.createElement("message-box");
+  const messageDate = document.createElement("span");
+  const messageContent = document.createElement("p");
   
   if (message.from_email.email) {
     messageBox.className = (userData.email === message.from_email.email)?"message-box me":"message-box you"
@@ -34,11 +35,9 @@ const createMessages = message => {
     messageBox.className = (userData.email === message.from_email)?"message-box me":"message-box you"
   }
 
-  const messageDate = document.createElement("span");
   messageDate.id = "message-box-date"
   messageDate.textContent = calculateDateDifference(message["created_at"]);
 
-  const messageContent = document.createElement("p");
   messageContent.id = "message-box-content"
   messageContent.textContent = message.content;
 
@@ -50,11 +49,12 @@ const createMessages = message => {
 
 const updateMessages = (data, message) => {
   /*
-  Atualiza a lista de mensagens de um certo chat
-
   data: informações do usuário clicado | false
   message: conteúdo da nova mensagem | false
   */
+ 
+  messageStudio.innerHTML = ""
+  
   if (data) {
     let otherEmail = document.createElement("mark")
     
@@ -62,27 +62,24 @@ const updateMessages = (data, message) => {
       otherEmail.textContent = "#"+data.email
       otherEmail.className = "email"
 
-      document.querySelector('#another-painel #user-name').textContent = data.name
-      document.querySelector('#another-painel #user-name').appendChild(otherEmail)
-      document.querySelector('#another-painel #user-photo').src = data.photoURL
-      document.querySelector(`#another-painel #state`).textContent = calculateDateLastStay(data.last_stay)
+      anotherPainel.querySelector('#user-name').textContent = data.name
+      anotherPainel.querySelector('#user-name').appendChild(otherEmail)
+
+      anotherPainel.querySelector('#user-photo').src = data.photoURL
+      anotherPainel.querySelector('#state').textContent = calculateDateLastStay(data.last_stay)
     }
 
-    messageStudio.innerHTML = ""
-    messageStudio.scrollTop = messageStudio.scrollHeight;
-
     if (messagesCached[data.email]) messagesCached[data.email].forEach(messageData => { createMessages(messageData) })
-  } else if (message && (userSelected == message["from_email"] || userSelected == message["to_email"])) {
-    messageStudio.innerHTML = ""
 
+  } else if (message && (userSelected == message["from_email"] || userSelected == message["to_email"])) {
     if (message["from_email"] == userData.email) {
       messagesCached[message["to_email"]].forEach(messageData => { createMessages(messageData) })
     } else {
       messagesCached[message["from_email"]].forEach(messageData => { createMessages(messageData) })
     }
-
-    messageStudio.scrollTop = messageStudio.scrollHeight;
   }
+
+  messageStudio.scrollTop = messageStudio.scrollHeight;
 }
 
 sendMessageElement.addEventListener('click', () => {

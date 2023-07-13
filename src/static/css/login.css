@@ -10,18 +10,20 @@ body {
 }
 
 .social-wireless {
-    display: flex;
     width: 278px;
     height: 56px;
     padding: 13px 10px;
+
+    display: flex;
     justify-content: center;
     align-items: center;
     gap: 15px;
+
     border-radius: 4px;
     border: 1px solid rgba(0, 0, 0, 0.50);
     background: #252525;
-    cursor: pointer;
 
+    cursor: pointer;
     user-select: none;
 }
 
@@ -36,11 +38,11 @@ body {
 }
 
 .social-wireless > p {
-    color: #F9F9F9;
-    text-align: center;
     font-size: 12px;
     font-family: Poppins;
     font-weight: 500;
+    text-align: center;
+    color: #F9F9F9;
 }
 
 main#login {
@@ -52,8 +54,8 @@ main#login {
 }
 
 main#login > div#info-login * {
-    color: #f9f9f9;
     font-size: 12px;
     font-weight: 500;
+    color: #f9f9f9;
     margin-right: auto;
 }

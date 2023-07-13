@@ -63,6 +63,7 @@ span#state {
     border-radius: 4px;
     resize: none;
     color: white;
+    caret-color: #8b6cef;
 }
 
 #message-writer > textarea::-webkit-scrollbar { width: 8px; }
@@ -126,9 +127,7 @@ span#message-box-date {
     margin-left: auto;
 }
 
-.message-box.me.not_readed {
-    background: #746596;
-}
+.message-box.me.not_readed { background: #746596; }
 
 #message-studio::-webkit-scrollbar { width: 8px; }
   

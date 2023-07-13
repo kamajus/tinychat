@@ -7,96 +7,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script>
-        var messagesCached = {};
-        var chatsCached = {};
-        var userStates = {};
-        var myFriends = [];
-
-        var isOtherWriting = false;
-        var userSelected, userData;
-
-        firebase.initializeApp({
-            apiKey: "AIzaSyAwLawFqBXpugTFrGZ47Omd1hx7vJQZhqA",
-            authDomain: "open-chat-44975.firebaseapp.com",
-            projectId: "open-chat-44975",
-            storageBucket: "open-chat-44975.appspot.com",
-            messagingSenderId: "419750701729",
-            appId: "1:419750701729:web:e959b1da9d9534eb869ee0"
-        });
-
-        const provider = new firebase.auth.GoogleAuthProvider();
-
-        const userLogin = user =>{
-            fetch('/login', {
-                "method": "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    "name": user["displayName"],
-                    "email": user["email"],
-                    "photoURL": user["photoURL"]
-                })
-            }).then(() => {
-                onLogin(user.email)
-            }).catch(error => {
-                console.error(error)
-            })
-        }
-
-        const googleSignIn = () => {
-            firebase.auth()
-            .signInWithPopup(provider)
-            .then((res) => {
-                userData = res.user;
-                userLogin(userData)
-            }).catch((error) => {
-                console.error(error)
-            });
-        }
-
-        const logOut = () => {
-            firebase.auth().signOut().then(() => {
-                window.document.location.pathname = "/login"
-            }).catch((error) => {
-                throw new Error(error)
-            });
-        }
-
-        const deleteAccount = () => {
-            if (userData) {
-                fetch(`/delete_account/${userData.email}`, {
-                    "method": "DELETE"
-                })
-                .then(() => {
-                    firebase.auth().signOut().then(() => {
-                        window.document.location.pathname = "/login"
-                    }).catch((error) => {
-                        throw new Error(error)
-                    });
-                }).catch((e) => {
-                    throw new Error(error)
-                })
-            }
-        }
-    </script>
+    
     <script src="{{ url_for('static', filename='js/firebase.js') }}"></script>
-    {% block head %}{% endblock %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/popup.css') }}">
+    
     <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%2210 0 100 100%22><text y=%22.90em%22 font-size=%2290%22>💬</text></svg>">
+    {% block head %}{% endblock %}
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-    {% block content %}
-    {% endblock %}
-
-    {% block popup %}
-    {% endblock %}
+    {% block content %}{% endblock %}
+    {% block popup %}{% endblock %}
     <script src="{{ url_for('static', filename='js/elements.js') }}"></script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     <script src="{{ url_for('static', filename='js/chats.js') }}"></script>

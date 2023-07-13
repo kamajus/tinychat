@@ -12,8 +12,8 @@ class UserEmail(BaseModel):
     email: EmailStr
     
 class MessageModel(BaseModel):
-    owner: EmailStr
-    target: EmailStr
+    from_email: EmailStr
+    to_email: EmailStr
     content: str  
     created_at: datetime
     

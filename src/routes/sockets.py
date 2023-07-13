@@ -98,4 +98,3 @@ def un_typing(data):
         "from_email": data["from_email"],
         "to_email": data["to_email"]
     })
-    

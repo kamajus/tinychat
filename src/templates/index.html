@@ -10,37 +10,31 @@
 {% endblock %}
 
 {% block content %}
-<!-- Messages menu -->
+<!-- Menu -->
 
 <div id="messages-menu">
     <div id="messages-action">
-        <form class="search-bar">
+        <form id="search-bar">
             <img src="{{ url_for('static', filename='img/search.svg') }}">
-            <input type="text" id="" placeholder="Pesquisar por conversas">
+            <input type="text" id="" placeholder="Pesquisar seus amigos e familiares">
         </form>
-    
-        <button id="new-message">
-            +
-        </button>
     </div>
-    <div class="messages"></div>
+    <div class="messages">
+        <div id="searching-messages"></div>
+    </div>
     <div class="user-painel">
         <span>
             <img src="" id="user-photo">
             <div id="user-info">
-                <span id="user-name">
-                    ...
-                </span>
-                <span class="email">
-                    ...
-                </span>
+                <span id="user-name">...</span>
+                <span class="email">...</span>
             </div>
         </span>
         <div id="user-options">
             <img src="{{ url_for('static', filename='img/options.svg') }}">      
         </div>
         <div id="mini-popup">
-            <button id="logout" onclick="logOut()">
+            <button onclick="logOut()">
                 <img src="{{ url_for('static', filename='img/x.svg') }}">
                 Terminar sessão
             </button>
@@ -76,28 +70,3 @@
     </div>
 </div>  
 {% endblock content %}
-
-<!-- Search user PopUp -->
-
-{% block popup %}
-<div id="popup">
-    <form class="search-bar">
-        <img src="{{ url_for('static', filename='img/search.svg') }}">
-        <input type="text" name="email" placeholder="Degite o email do usuário">
-    </form>
-
-    <div class="message" onclick="messagesClick">
-        <img id="user-photo">
-        <div id="content">
-            <div>
-            <span id="user-name"></span>
-            <span id="date"></span>
-            </div>
-            <p></p>
-        </div>
-        <span id="counter"></span>
-    </div>
-
-    <p>Encontre usuários e começe a conversar 💬</p>
-</div>
-{% endblock %}

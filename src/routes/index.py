@@ -34,28 +34,16 @@ def login():
         return user, 201
 
 
-@index.get('/search/users/<email>')
-@validate()
-def get_users(email: str):
-    validate_email(email)
+@index.get('/search/<search>')
+def get_users(search: str):
+    users = list(db.users.find({"email": {'$regex': search}}))
+    users_ = []
     
-    user = db.users.find_one({"email": email})
-
-    if (user):
+    for user in users:
         user['_id'] = str(user['_id'])
-        
-    return (user, 200) if user else ("not exists", 400)
-
-
-@index.post('/messages')
-@validate()
-def get_messages():    
-    UsersList(users=request.json["users"])
-    
-    chat = db.chats.find_one({"users": {"$all":request.json["users"]}})
-    
-    return (chat['messages'], 200) if chat else ("you dont have message", 400)
-
+        users_.append(user)
+                
+    return (users_, 200) if users_ else ("not exists", 400)
 
 @index.put('/read_messages')
 @validate()
@@ -74,7 +62,6 @@ def read_messages():
     except Exception as error:
         response = f"error {error}", 200
         
-    
     return response
 
 @index.get('/chats/<user>')
@@ -113,13 +100,11 @@ def get_states(user):
         for another_user in u["users"]:
             if another_user != user:
                 other_user = db.users.find_one({"email": another_user})
-                print(other_user)
-                
+                                
                 final_users.append({
                     "user": another_user,
                     "last_stay": other_user['last_stay']
                 })
         
     return final_users
-        
-    
+
