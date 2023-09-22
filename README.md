@@ -18,7 +18,3 @@ e com uma privacidade extrema.
 - Css
 - Javascript
 - Firebase
-
-```py
-isFinish = False
-```
