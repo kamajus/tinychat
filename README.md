@@ -1,20 +1,22 @@
-# Open chat
+# Tinychat
 
-Open chat é uma aplicação web cujo o principal objectivo é a troca de informações (mensagens) rapidamente
-e com uma privacidade extrema.
+Tinychat is a web application designed to facilitate quick and secure information exchange (messages) with a strong emphasis on privacy.
 
-### Objectivos
+### Objectives
 
-- Troca de informações individuais
-- Privacidade
+- **Secure Information Exchange**: Enable private, one-on-one communication.
+- **Privacy**: Ensure that user data and conversations remain confidential.
 
-### Ferramentas
+### Technologies Used
 
-- Python
-- Flask
-- Pydantic
-- Mongo DB
-- Html
-- Css
-- Javascript
-- Firebase
+- **Backend**:
+  - Python
+  - Flask
+  - Pydantic
+  - MongoDB
+- **Frontend**:
+  - HTML
+  - CSS
+  - JavaScript
+- **Cloud Services**:
+  - Firebase
