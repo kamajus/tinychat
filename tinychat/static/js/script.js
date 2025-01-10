@@ -112,7 +112,7 @@ const updateUserStates = (user, lastStay) => {
 const updateWriteState = (user, isWriting) => {
   if (anotherPainel.querySelector('mark.email').textContent.replace("#", "") == user) {
     if (isWriting) {
-      anotherPainel.querySelector('#state').textContent = "Degitando..."
+      anotherPainel.querySelector('#state').textContent = "typing..."
     } else {
       anotherPainel.querySelector('#state').textContent = "..."
     }
