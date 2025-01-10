@@ -7,6 +7,5 @@ const messageImage = document.querySelector('#send-message > img');
 const miniPopUp = document.querySelector('#mini-popup');
 const sendMessageElement = document.querySelector('#send-message');
 const searchBar = document.querySelector('#search-bar');
-const searchingMessages = document.querySelector('#searching-messages')
 const userOptions = document.querySelector('#user-options');
 const userPainel = document.querySelector('.user-painel');

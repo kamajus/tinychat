@@ -41,19 +41,25 @@ sio.on('message', data => {
 })
 
 sio.on('typing', message => {
-    if (message.to == userData.email) updateWriteState(message.from_email, true)
-    isOtherWriting = true
+    if (message.to_email == userData.email) {
+        updateWriteState(message.from_email, true)
+    }
+
+    isWriting = true
 })
 
 sio.on('un-typing', message => {
-    if (message.to == userData.email) updateWriteState(message.from_email, false)
-    isOtherWriting = false
+    if (message.to_email == userData.email) {
+        updateWriteState(message.from_email, false)
+    }
+
+    isWriting = false
 })
 
 const sendMessage = message => {
     sio.emit('message', {
         "from_email": message.from_email,
-        "to_email": message.to_email,
+        "to_email": message.to_email_email,
         "content": message.content
     })
 }
