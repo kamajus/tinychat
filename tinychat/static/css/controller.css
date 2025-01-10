@@ -38,12 +38,12 @@ span#state {
 }
 
 .messages-controll > #message-studio {
-    height: calc(100% - 90px - 80px);
+    height: calc(100% - 90px - 100px);
     width: 100%;
 }
 
 .messages-controll > #message-writer {
-    height: 80px;
+    height: 100px;
     width: 100%;
     background-color: #212121;
     border-top: 1px solid rgba(0, 0, 0, 0.50);

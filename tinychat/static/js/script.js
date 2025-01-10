@@ -1,41 +1,42 @@
-// document.querySelector('#messages-action input')
-// .addEventListener('input', (e) => {
+document.querySelector('#messages-action input')
+.addEventListener('input', (e) => {
 
-//   if (e.target.value.trim() !== "") {
-//     searchingMessages.style.display = "flex"
+  if (e.target.value.trim() !== "") {
+    messageContainer.innerHTML = ''
 
-//     let users = []
+    fetch(`/search/${e.target.value}`)
+    .then((data) => data.json())
+    .then((data) => {
+      for (let dt of data) {
+        if (userData.email !== dt['email']) {
+        if (friends.includes(dt['email'])) {
+          messageContainer.appendChild(createChat({
+            "messages": chatsCached[dt['email']]["messages"],
+            "user": chatsCached[dt['email']]["user"],
+            "friend": true
+          }))
+        } else {
+          messageContainer.appendChild(createChat({
+            "user": dt,
+            "friend": false
+          }))
+        }
+      }
+      }
+    })
+  } else { 
+    messageContainer.innerHTML = '';
 
-//     for (let user of friends) {
-//       if (user.includes(e.target.value)) {
-//         let insertIndex = users.findIndex(u => u.length < e.target.value.length);
-//         if (insertIndex === -1) {
-//           searchingMessages.appendChild(createChat(user))
-//         } else {
-//           searchingMessages.insertBefore(searchingMessages.firstChild, user)
-//         }
-//       }
-//     }
+    for (let user of friends) {
+      messageContainer.appendChild(createChat({
+        "messages": chatsCached[user]["messages"],
+        "user": chatsCached[user]["user"],
+        "friend": true
+      }))
+    }
+   }
+})
 
-//     for (let user of users) {
-//       createChat({
-//         "messages": chatsCached[user]["messages"],
-//         "user": chatsCached[user]["user"]
-//       })
-//     }
-
-//     fetch(`/search/${e.target.value}`)
-//     .then((data) => data.json())
-//     .then((data) => {
-//       for (let dt of data) {
-//         if (!friends.includes(dt['email'])) {
-//           searchingMessages.appendChild(createChat(dt))
-//         }
-//       }
-//     })
-//   } else { searchingMessages.style.display = "none" }
-// })
- 
 document.querySelector('#messages-action form')
 .addEventListener('submit', (e) => {
   e.preventDefault();
@@ -101,7 +102,7 @@ const calculateDateLastStay = date => {
 }
 
 const updateUserStates = (user, lastStay) => {
-  if (!isOtherWriting) {
+  if (!isWriting) {
     if (anotherPainel.querySelector('mark.email').textContent.replace("#", "") == user) {
       anotherPainel.querySelector('#state').textContent = calculateDateLastStay(lastStay)
     }
@@ -122,19 +123,20 @@ const messagesClick = event => {
   /*
   event: Event
   */
-  // let selectedElements = document.getElementsByClassName('selected')
+  let selectedElements = document.getElementsByClassName('selected')
+  
+  if (selectedElements.length > 0) {
+    for (let element of selectedElements) {
+      element.classList.remove('selected')
+    }
+  }
+
   let chat = document.querySelector(`div#${event.target.id}.message`)
   chat.classList.add('selected')
 
   userSelected = `${event.target.id}@gmail.com`
   messageStudio.innerHTML = ""
   messagesControll.style.display = 'block' 
-  
-  // if (selectedElements.length > 0) {
-  //   for (let element of selectedElements) {
-  //     element.classList.remove('selected')
-  //   }
-  // }
 
   updateMessages({
     "name": event.target.dataset.name,

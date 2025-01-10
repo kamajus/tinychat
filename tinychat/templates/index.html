@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %}Open chat{% endblock %}
+{% block title %}TinyChat{% endblock %}
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/controller.css') }}">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
-<script src="{{ url_for('static', filename='js/socketio.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -16,12 +15,10 @@
     <div id="messages-action">
         <form id="search-bar">
             <img src="{{ url_for('static', filename='img/search.svg') }}">
-            <input type="text" id="" placeholder="Pesquisar seus amigos e familiares">
+            <input type="text" id="" placeholder="Search">
         </form>
     </div>
-    <div class="messages">
-        <div id="searching-messages"></div>
-    </div>
+    <div class="messages"></div>
     <div class="user-painel">
         <span>
             <img src="" id="user-photo">
@@ -36,7 +33,7 @@
         <div id="mini-popup">
             <button onclick="logOut()">
                 <img src="{{ url_for('static', filename='img/x.svg') }}">
-                Terminar sessão
+                Log out
             </button>
         </div>
     </div>
@@ -63,7 +60,7 @@
     </div>
     <div id="message-studio"></div>
     <div id="message-writer">
-        <textarea placeholder="Degite o conteúdo da mensagem 💬"></textarea>
+        <textarea placeholder="Say something"></textarea>
         <span id="send-message">
             <img src="{{ url_for('static', filename='img/without-message.svg') }}">
         </span>

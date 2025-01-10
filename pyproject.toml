@@ -8,16 +8,26 @@ readme = "README.md"
 packages = [{include = "openchat"}]
 
 [tool.poetry.dependencies]
-python = "^3.8"
-flask = "^2.3.2"
-flask-socketio = "^5.3.4"
+python = "^3.12.3"
 simple-websocket = "^0.10.1"
 pymongo = "^4.4.0"
-pydantic = {extras = ["email"], version = "^2.0"}
-flask-pydantic = "^0.11.0"
-flask-cors = "^4.0.0"
+pydantic = { extras = ["email"], version = "^2.10.4" }
 rich = "^13.4.2"
 python-dotenv = "^1.0.0"
+uvicorn = "^0.34.0"
+black = "^24.10.0"
+isort = "^5.13.2"
+taskipy = "^1.14.1"
+flask = "^3.1.0"
+flask-cors = "^5.0.0"
+flask-socketio = "^5.5.1"
+flask-pydantic = "^0.12.0"
+eventlet = "^0.38.2"
+gevent = "^24.11.1"
+
+[tool.taskipy.tasks]
+lint = "black tinychat/ && isort tinychat/"
+run = "python tinychat/main.py"
 
 
 [build-system]
