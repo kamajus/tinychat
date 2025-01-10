@@ -1,22 +1,27 @@
 # Tinychat
 
-Tinychat is a web application designed to facilitate quick and secure information exchange (messages) with a strong emphasis on privacy.
+Tinychat is a real-time chat application built using WebSockets for efficient communication.
 
-### Objectives
+## Features
 
-- **Secure Information Exchange**: Enable private, one-on-one communication.
-- **Privacy**: Ensure that user data and conversations remain confidential.
+- Real-time communication between users.
+- Simple and intuitive interface.
 
-### Technologies Used
+## Technologies Used
 
 - **Backend**:
   - Python
   - Flask
   - Pydantic
-  - MongoDB
+  - Socket.IO
+
 - **Frontend**:
   - HTML
   - CSS
   - JavaScript
-- **Cloud Services**:
-  - Firebase
+
+- **Database**:
+  - MongoDB
+
+- **Others**:
+  - Firebase (Auth)
